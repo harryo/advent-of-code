@@ -5,7 +5,7 @@
  * create array of sums of 3 values, then apply original solve function
  */
 
-const solve = require('./solve1');
+const solve1 = require('./solve1');
 
 function arraySum(arr) {
   return arr.reduce((sum, value) => sum + value, 0);
@@ -21,7 +21,7 @@ function solve2(data, range) {
 
   const slidingSums = endOfSums.map((dummy, idx) => sumRange(idx));
 
-  return solve(slidingSums);
+  return solve1(slidingSums);
 }
 
 module.exports = solve2;
