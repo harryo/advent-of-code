@@ -1,0 +1,30 @@
+
+The count is gone
+The previous is empty
+
+Listen to the file
+until the file is empty
+If the previous isn't empty and the file is bigger than the previous
+build the count up
+
+Let the previous be the file
+Listen to the file
+
+Shout the count
+
+----
+
+The coffee is gone
+The house is empty
+
+Listen to the office
+until the office is empty
+If the house isn't empty and the office is bigger than the house
+build the coffee up
+
+Let the house be the office
+Listen to the office
+
+Shout the coffee
+
+
