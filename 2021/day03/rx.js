@@ -7,7 +7,7 @@ const source = readLines(useSample);
 
 const size = source[0].length;
 const initialData = {
-  counts: new Array(size).fill(0),
+  counts: Array(size).fill(0),
   total: 0,
 };
 

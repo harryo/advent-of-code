@@ -1,4 +1,5 @@
 const readLines = require('../../helpers/readLines.js');
+const xor = require('../../helpers/xor.js');
 
 const useSample = 0;
 const source = readLines(useSample);
@@ -25,7 +26,7 @@ console.log('Part 2 solution:', oxygen * co2);
  */
 function getGammaString(list) {
   const half = list.length / 2;
-  return new Array(size)
+  return Array(size)
     .fill()
     .map((dummy, pos) => {
       const countOnes = list.filter(v => v[pos] === '1').length;
@@ -43,7 +44,6 @@ function getGammaString(list) {
  */
 function filterList(list, pos = 0, max) {
   const listWithOnes = list.filter(v => v[pos] === '1');
-  // Note: bitwise XOR ^ is same a logical XOR when comparing booleans
-  const newList = (listWithOnes.length < list.length / 2) ^ max ? listWithOnes : list.filter(v => v[pos] === '0');
+  const newList = xor(listWithOnes.length < list.length / 2, max) ? listWithOnes : list.filter(v => v[pos] === '0');
   return newList.length > 1 && pos + 1 < size ? filterList(newList, pos + 1, max) : newList;
 }
