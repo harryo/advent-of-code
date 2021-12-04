@@ -1,7 +1,7 @@
 const readFile = require('./readFile');
 
-function readLines(sample) {
-  return readFile(sample).split(/\n/).filter(Boolean);
+function readLines() {
+  return readFile().split(/\n/).filter(Boolean);
 }
 
 module.exports = readLines;

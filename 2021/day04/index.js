@@ -2,8 +2,7 @@ const readFile = require('../../helpers/readFile');
 const Board = require('./Board');
 
 const source = readFile().split(/\n{2,}/).filter(Boolean);
-
-const numbers = source[0].split(/\D+/).map(Number);
+const numbers = source[0].split(/\D+/).filter(Boolean).map(Number);
 const boards = source.slice(1).map((line) => new Board(line));
 
 const completedBoards = new Set();
