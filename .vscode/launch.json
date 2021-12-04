@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Use sample.txt",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${file}",
+      "args": ["sample.txt"]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Use input.txt",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${file}",
+      "args": ["input.txt"]
+    }
+  ]
+}
