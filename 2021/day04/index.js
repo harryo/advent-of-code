@@ -32,13 +32,20 @@ function play(getLast) {
     [winner] = playNumber(num);
     return getLast ? completedBoards.size === boards.length : completedBoards.size > 0;
   });
-  return winner.sumUnmarked() * lastNumber;
+  return winner && winner.sumUnmarked() * lastNumber;
+}
+
+function reset() {
+  boards.forEach((board) => board.reset());
+  completedBoards.clear();
 }
 
 console.time('part 1');
 const score1 = play(false);
 console.timeEnd('part 1');
 console.log('Part 1 solution:', score1);
+
+reset();
 
 console.time('part 2');
 const score2 = play(true);

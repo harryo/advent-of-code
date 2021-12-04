@@ -34,6 +34,13 @@ class Board {
       .reduce((sum, cell) => sum + cell.num, 0);
     return this.data.reduce((sum, row) => sum + unmarkedRowSum(row), 0);
   }
+
+  reset() {
+    this.data.forEach((row) => row.forEach((cell) => {
+      // eslint-disable-next-line no-param-reassign
+      cell.marked = false;
+    }));
+  }
 }
 
 module.exports = Board;
