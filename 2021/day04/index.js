@@ -3,7 +3,7 @@ const Board = require('./Board');
 
 const source = readFile().split(/\n{2,}/).filter(Boolean);
 const numbers = source[0].split(/\D+/).filter(Boolean).map(Number);
-const boards = source.slice(1).map((line) => new Board(line));
+const boards = source.slice(1).map((block) => new Board(block));
 
 const completedBoards = new Set();
 

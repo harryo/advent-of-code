@@ -1,7 +1,7 @@
 class Board {
-  constructor(line) {
-    this.data = line.split(/\n/)
-      .map((row) => row.split(/\s+/)
+  constructor(block) {
+    this.data = block.split(/\n/)
+      .map((line) => line.split(/\s+/)
         .filter(Boolean)
         .map((str) => ({ num: Number(str), marked: false })));
   }
