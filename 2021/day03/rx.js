@@ -2,7 +2,7 @@ const { from } = require('rxjs');
 const { map, reduce } = require('rxjs/operators');
 const readLines = require('../../helpers/readLines');
 
-const source = readLines(process.argv[2]);
+const source = readLines();
 
 const size = source[0].length;
 const initialData = {

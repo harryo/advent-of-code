@@ -1,7 +1,7 @@
 const readLines = require('../../helpers/readLines');
 const xor = require('../../helpers/xor');
 
-const source = readLines(process.argv[2]);
+const source = readLines();
 
 const size = source[0].length;
 

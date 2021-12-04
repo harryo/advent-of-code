@@ -4,7 +4,7 @@ const solve2 = require('./solve2');
 
 const range = 3;
 
-const data = readLines(process.argv[2]).map(Number);
+const data = readLines().map(Number);
 console.time('part 1');
 const solution = solve1(data);
 console.timeEnd('part 1');

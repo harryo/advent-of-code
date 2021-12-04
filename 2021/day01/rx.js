@@ -6,7 +6,7 @@ const readLines = require('../../helpers/readLines');
 
 const range = 3;
 
-const source = readLines(process.argv[2]);
+const source = readLines();
 
 function arraySum(arr) {
   return arr.reduce((sum, val) => sum + val, 0);

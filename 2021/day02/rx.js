@@ -3,7 +3,7 @@ const { map, reduce } = require('rxjs/operators');
 const readLines = require('../../helpers/readLines');
 const parseLine = require('./parseLine');
 
-const source = readLines(process.argv[2]);
+const source = readLines();
 
 const initialState = {
   horizontal: 0,
