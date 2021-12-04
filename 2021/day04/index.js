@@ -26,38 +26,21 @@ function playNumber(num) {
   return completed;
 }
 
-/**
- * Find board that is completed first
- * @returns score
- */
-function playToWin() {
+function play(getLast) {
   let winner = null;
   const lastNumber = numbers.find((num) => {
     [winner] = playNumber(num);
-    return completedBoards.size > 0;
-  });
-  return winner.sumUnmarked() * lastNumber;
-}
-
-/**
- * Find board that is completed last
- * @returns score
- */
-function playToLose() {
-  let winner = null;
-  const lastNumber = numbers.find((num) => {
-    [winner] = playNumber(num);
-    return completedBoards.size === boards.length;
+    return getLast ? completedBoards.size === boards.length : completedBoards.size > 0;
   });
   return winner.sumUnmarked() * lastNumber;
 }
 
 console.time('part 1');
-const score1 = playToWin();
+const score1 = play(false);
 console.timeEnd('part 1');
 console.log('Part 1 solution:', score1);
 
 console.time('part 2');
-const score2 = playToLose();
+const score2 = play(true);
 console.timeEnd('part 2');
 console.log('Part 2 solution:', score2);
