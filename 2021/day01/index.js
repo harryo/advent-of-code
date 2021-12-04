@@ -8,9 +8,9 @@ const data = readLines().map(Number);
 console.time('part 1');
 const solution = solve1(data);
 console.timeEnd('part 1');
-console.log('Day 1 part 1 solution:', solution);
+console.log('Part 1 solution:', solution);
 
 console.time('part 2');
 const solution2 = solve2(data, range);
 console.timeEnd('part 2');
-console.log('Day 1 part 2 solution:', solution2);
+console.log('Part 2 solution:', solution2);

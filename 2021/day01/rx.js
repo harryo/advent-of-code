@@ -20,7 +20,7 @@ from(source)
     filter(([v1, v2]) => v2 > v1),
     count(),
   )
-  .subscribe((n) => console.log('Day 1 part 1 solution:', n));
+  .subscribe((n) => console.log('Part 1 solution:', n));
 console.timeEnd('part 1');
 
 console.time('part 2');
@@ -34,7 +34,7 @@ from(source)
     filter(([v1, v2]) => v2 > v1),
     count(),
   )
-  .subscribe((n) => console.log('Day 1 part 2 solution:', n));
+  .subscribe((n) => console.log('Part 2 solution:', n));
 console.timeEnd('part 2');
 
 console.time('part 2a');
@@ -45,5 +45,5 @@ from(source)
     filter((arr) => arr.length > range && arr[0] > arr[range]),
     count(),
   )
-  .subscribe((n) => console.log('Day 1 part 2 alt. solution:', n));
+  .subscribe((n) => console.log('Part 2 alt. solution:', n));
 console.timeEnd('part 2a');
