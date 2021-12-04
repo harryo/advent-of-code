@@ -34,7 +34,7 @@ function playToWin() {
   let winner = null;
   const lastNumber = numbers.find((num) => {
     [winner] = playNumber(num);
-    return Boolean(winner);
+    return completedBoards.size > 0;
   });
   return winner.sumUnmarked() * lastNumber;
 }
@@ -47,7 +47,7 @@ function playToLose() {
   let winner = null;
   const lastNumber = numbers.find((num) => {
     [winner] = playNumber(num);
-    return boards.length === completedBoards.size;
+    return completedBoards.size === boards.length;
   });
   return winner.sumUnmarked() * lastNumber;
 }
