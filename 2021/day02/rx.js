@@ -1,17 +1,15 @@
 const { from } = require('rxjs');
 const { map, reduce } = require('rxjs/operators');
-const readLines = require('../../helpers/readLines.js');
+const readLines = require('../../helpers/readLines');
 const parseLine = require('./parseLine');
 
-const useSample = 1;
-
-const source = readLines(useSample);
+const source = readLines(process.argv[2]);
 
 const initialState = {
   horizontal: 0,
   depth: 0,
   aim: 0,
-}
+};
 
 function reducer1(acc, val) {
   const { command, value } = val;
@@ -56,22 +54,21 @@ console.time('Part 1');
 from(source)
   .pipe(
     map(parseLine),
-    reduce(reducer1, initialState)
+    reduce(reducer1, initialState),
   )
-  .subscribe(result => {
+  .subscribe((result) => {
     const { horizontal, depth } = result;
     console.timeEnd('Part 1');
     console.log('Part 1 solution:', horizontal * depth);
   });
 
-
 console.time('Part 2');
 from(source)
   .pipe(
     map(parseLine),
-    reduce(reducer2, initialState)
+    reduce(reducer2, initialState),
   )
-  .subscribe(result => {
+  .subscribe((result) => {
     const { horizontal, depth } = result;
     console.timeEnd('Part 2');
     console.log('Part 2 solution:', horizontal * depth);
