@@ -1,4 +1,5 @@
 const readFile = require('../../helpers/readFile');
+const showTimedSolution = require('../../helpers/showTimedSolution');
 const Board = require('./Board');
 
 const source = readFile().split(/\n{2,}/).filter(Boolean);
@@ -40,14 +41,8 @@ function reset() {
   completedBoards.clear();
 }
 
-console.time('part 1');
-const score1 = play(false);
-console.timeEnd('part 1');
-console.log('Part 1 solution:', score1);
+showTimedSolution(1, () => play(false));
 
 reset();
 
-console.time('part 2');
-const score2 = play(true);
-console.timeEnd('part 2');
-console.log('Part 2 solution:', score2);
+showTimedSolution(2, () => play(true));
