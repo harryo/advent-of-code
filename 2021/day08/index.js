@@ -21,6 +21,10 @@ function solve1() {
   return source.map((s) => s.output).flat().filter((o) => matchingDigits(o).length === 1).length;
 }
 
+/**
+ * getInitialOptions, each can stand for any char
+ * @returns object with characters as key, values are possible chars this key could stand for
+ */
 function getInitialOptions() {
   return chars.reduce((acc, ch) => ({ ...acc, [ch]: chars }), {});
 }
@@ -29,19 +33,18 @@ function getInitialOptions() {
  * Transform a pattern into a digit
  * @param {str} pattern
  * @param {object} options
- * @returns
+ * @returns corresponding digit, or -1 if not found
  */
 function transform(pattern, options) {
   const transformed = pattern.split('').map((c) => options[c][0]).sort().join('');
-  const result = digitSegments.findIndex((str) => str === transformed);
-  return result;
+  return digitSegments.findIndex((str) => str === transformed);
 }
 
 /**
  * Just try each option and see whether it results in valid digits
  * @param {*} patterns
  * @param {*} options
- * @returns
+ * @returns options Object with only one option per key, resulting in valid digits, or null if none found
  */
 function tryOut(patterns, options) {
   // Find a char for which there are still multiple options
@@ -61,6 +64,11 @@ function tryOut(patterns, options) {
   return solution;
 }
 
+/**
+ * Find solution for given patterns, using the output
+ * @param {*} param0
+ * @returns transformed output digits as number
+ */
 function deduce({ patterns, output }) {
   const options = getInitialOptions();
   patterns.forEach((pat) => {
