@@ -1,5 +1,8 @@
+/* eslint-disable no-param-reassign */
 const readlines = require('../../helpers/readLines');
 const showTimedSolution = require('../../helpers/showTimedSolution');
+
+const sortPattern = (pat) => Array.from(pat).sort().join('');
 
 function splitInput(line) {
   const [patterns, output] = line.split('|');
@@ -17,6 +20,10 @@ function matchingDigits(pat) {
   return digitSegments.filter((o) => o.length === pat.length);
 }
 
+/**
+ *
+ * @returns Just count the strings
+ */
 function solve1() {
   return source.map((s) => s.output).flat().filter((o) => matchingDigits(o).length === 1).length;
 }
@@ -96,6 +103,74 @@ function solve2() {
   return source.reduce((sum, o) => sum + deduce(o), 0);
 }
 
+/**
+ * Alternative - solve by finding supersets/subsets
+ */
+
+function eliminate({ patterns, output }) {
+  const options = patterns.map((pat) => ({
+    pattern: sortPattern(pat),
+    solutions: matchingDigits(pat).map((p) => digitSegments.indexOf(p)),
+  }));
+
+  const solved = [];
+
+  function findSolved() {
+    const justSolved = options
+      .filter((o) => {
+        if (o.solutions.length > 1 || solved[o.solutions[0]]) {
+          return false;
+        }
+        solved[o.solutions[0]] = o.pattern;
+        return true;
+      });
+    return justSolved.map((o) => o.solutions[0]);
+  }
+
+  const isSuperset = (pat, subPat) => Array.from(subPat).every((c) => pat.includes(c));
+
+  function findSuperset(n, reverse) {
+    const subPat = digitSegments[n];
+    return digitSegments
+      .filter((pat) => (reverse ? isSuperset(subPat, pat) : isSuperset(pat, subPat)))
+      .map((p) => digitSegments.indexOf(p));
+  }
+
+  let newlySolved = findSolved();
+  while (newlySolved.length > 0) {
+    newlySolved.forEach((n) => {
+      const superset = findSuperset(n);
+      options.forEach((o) => {
+        if (isSuperset(o.pattern, solved[n])) {
+          o.solutions = o.solutions.filter((v) => superset.includes(v));
+        } else {
+          o.solutions = o.solutions.filter((v) => !superset.includes(v));
+        }
+      });
+      const subset = findSuperset(n, true);
+      options.forEach((o) => {
+        if (isSuperset(solved[n], o.pattern)) {
+          o.solutions = o.solutions.filter((v) => subset.includes(v));
+        } else {
+          o.solutions = o.solutions.filter((v) => !subset.includes(v));
+        }
+      });
+    });
+    newlySolved = findSolved();
+  }
+  const result = output
+    .map(sortPattern)
+    .map((pat) => Object.keys(solved)
+      .find((key) => solved[key] === pat));
+  return parseInt(result.join(''), 10);
+}
+
+function solve2a() {
+  return source.reduce((sum, o) => sum + eliminate(o), 0);
+}
+
 showTimedSolution(1, () => solve1());
 
 showTimedSolution(2, () => solve2());
+
+showTimedSolution('2a', () => solve2a());
