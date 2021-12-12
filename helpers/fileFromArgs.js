@@ -7,7 +7,7 @@ function fileFromArgs() {
   if (!filename) {
     throw new Error('Missing filename');
   }
-  const pathname = process.argv[1].replace(/[^/]*$/, filename);
+  const pathname = process.argv[1].replace(/[\w.]*$/, filename);
   return pathname;
 }
 

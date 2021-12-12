@@ -108,6 +108,7 @@ function solve2() {
  */
 
 function eliminate({ patterns, output }) {
+  // Set initial solution based on length of pattern
   const options = patterns.map((pat) => ({
     pattern: sortPattern(pat),
     solutions: matchingDigits(pat).map((p) => digitSegments.indexOf(p)),
@@ -115,20 +116,17 @@ function eliminate({ patterns, output }) {
 
   const solved = [];
 
+  // Find patterns with only one solution left
   function findSolved() {
-    const justSolved = options
-      .filter((o) => {
-        if (o.solutions.length > 1 || solved[o.solutions[0]]) {
-          return false;
-        }
-        solved[o.solutions[0]] = o.pattern;
-        return true;
-      });
+    const justSolved = options.filter(o => o.solutions.length === 1 && !solved[o.solutions[0]] );
+    justSolved.forEach(o => {
+      solved[o.solutions[0]] = o.pattern;
+    })
     return justSolved.map((o) => o.solutions[0]);
   }
 
+  // Test if all segments of subset are included in superset
   const isSuperset = (pat, subPat) => Array.from(subPat).every((c) => pat.includes(c));
-
   function findSuperset(n, reverse) {
     const subPat = digitSegments[n];
     return digitSegments
@@ -137,22 +135,19 @@ function eliminate({ patterns, output }) {
   }
 
   let newlySolved = findSolved();
+  // Loop until no new solutions are found
   while (newlySolved.length > 0) {
     newlySolved.forEach((n) => {
       const superset = findSuperset(n);
-      options.forEach((o) => {
-        if (isSuperset(o.pattern, solved[n])) {
-          o.solutions = o.solutions.filter((v) => superset.includes(v));
-        } else {
-          o.solutions = o.solutions.filter((v) => !superset.includes(v));
-        }
-      });
       const subset = findSuperset(n, true);
+      const patLenght = solved[n].length;
       options.forEach((o) => {
-        if (isSuperset(solved[n], o.pattern)) {
-          o.solutions = o.solutions.filter((v) => subset.includes(v));
-        } else {
-          o.solutions = o.solutions.filter((v) => !subset.includes(v));
+        if (o.pattern.length > patLenght) {
+          o.solutions = o.solutions.filter(v => isSuperset(o.pattern, solved[n]) === superset.includes(v));
+        } else if (o.pattern.length < patLenght) {
+          o.solutions = o.solutions.filter(v => isSuperset(solved[n], o.pattern) === subset.includes(v));
+        } else if (o.pattern !== solved[n]) {
+          o.solutions === o.solutions.filter(v => v === n);
         }
       });
     });
