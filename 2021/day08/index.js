@@ -118,10 +118,10 @@ function eliminate({ patterns, output }) {
 
   // Find patterns with only one solution left
   function findSolved() {
-    const justSolved = options.filter(o => o.solutions.length === 1 && !solved[o.solutions[0]] );
-    justSolved.forEach(o => {
+    const justSolved = options.filter((o) => o.solutions.length === 1 && !solved[o.solutions[0]]);
+    justSolved.forEach((o) => {
       solved[o.solutions[0]] = o.pattern;
-    })
+    });
     return justSolved.map((o) => o.solutions[0]);
   }
 
@@ -143,11 +143,11 @@ function eliminate({ patterns, output }) {
       const patLenght = solved[n].length;
       options.forEach((o) => {
         if (o.pattern.length > patLenght) {
-          o.solutions = o.solutions.filter(v => isSuperset(o.pattern, solved[n]) === superset.includes(v));
+          o.solutions = o.solutions.filter((v) => isSuperset(o.pattern, solved[n]) === superset.includes(v));
         } else if (o.pattern.length < patLenght) {
-          o.solutions = o.solutions.filter(v => isSuperset(solved[n], o.pattern) === subset.includes(v));
+          o.solutions = o.solutions.filter((v) => isSuperset(solved[n], o.pattern) === subset.includes(v));
         } else if (o.pattern !== solved[n]) {
-          o.solutions === o.solutions.filter(v => v === n);
+          o.solutions = o.solutions.filter((v) => v === n);
         }
       });
     });
