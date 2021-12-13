@@ -2,6 +2,7 @@
 const readLines = require('../../helpers/readLines');
 const showTimedSolution = require('../../helpers/showTimedSolution');
 
+// Make list of connections from each cave
 const connections = {};
 readLines().forEach((line) => {
   const [c1, c2] = line.split('-');
