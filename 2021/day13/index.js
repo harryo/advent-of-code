@@ -25,7 +25,7 @@ function makeFold(pts, fold) {
   return Array.from(new Set(newPoints));
 }
 
-// Create a mtraix with the points marked
+// Create a matrix with the points marked
 function asString(strPoints) {
   const pts = strPoints.map((p) => p.split(',').map(Number)).map(([x, y]) => ({ x, y }));
   const size = {
@@ -36,8 +36,7 @@ function asString(strPoints) {
   pts.forEach((pt) => {
     matrix[pt.y][pt.x] = '#';
   });
-  const str = matrix.map((line) => line.join('')).join('\n');
-  return `\n${str}`;
+  return matrix.map((line) => line.join('')).join('\n');
 }
 
 function solve1() {
@@ -46,7 +45,7 @@ function solve1() {
 
 function solve2() {
   const final = folds.reduce((pts, fold) => makeFold(pts, fold), points);
-  return asString(final);
+  return `\n${asString(final)}`;
 }
 
 showTimedSolution(1, () => solve1());
