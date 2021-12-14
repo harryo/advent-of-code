@@ -1,21 +1,35 @@
 // const readFile = require('../../helpers/readFile');
 // const readLines = require('../../helpers/readLines');
+const forEach = require('../../helpers/forEach');
 const readBlocks = require('../../helpers/readBlocks');
 const showTimedSolution = require('../../helpers/showTimedSolution');
-
-/**
- * In replacements, always return the result minus the first character,
- * as this is already included in the replacement of the previous pair
- */
 
 const [template, ruleLines] = readBlocks();
 const rules = {};
 ruleLines.split(/\n/).map((line) => line.split(/\W+/))
   .forEach(([pair, char]) => {
-    rules[pair] = Array(40).fill(); // Array to be extended with multi-step replacements
-    rules[pair][0] = char;
-    rules[pair][1] = `${pair[0]}${char}${pair[1]}`;
+    rules[pair] = pairwise(`${pair[0]}${char}${pair[1]}`);
   });
+
+function replacePair(counts, pair, pairCount) {
+  const repl = rules[pair];
+  if (!repl || pairCount === 0) {
+    return counts;
+  }
+  const result = {
+    ...counts,
+    [pair]: counts[pair] - pairCount,
+  };
+  repl.forEach((p) => {
+    result[p] = (result[p] || 0) + pairCount;
+  });
+  return result;
+}
+
+function replaceAllPairs(counts) {
+  const pairs = Object.keys(counts);
+  return pairs.reduce((acc, pair) => replacePair(acc, pair, counts[pair]), counts);
+}
 
 /**
  * Split an array into character pairs
@@ -26,79 +40,28 @@ function pairwise(str) {
   return Array(str.length - 1).fill().map((dummy, i) => str.slice(i, i + 2));
 }
 
-/**
- * find Replacement for pair after number of steps
- * @param {string} pair
- * @param {integer} steps
- * @returns replacement
- */
-const cacheCount = { checked: 0, found: 0 };
-
-function findLastStep(limit, rule) {
-  for (let i = limit; i > 0; i--) {
-    if (rule[i]) {
-      return i;
-    }
-  }
-  throw new Error('No result!');
-}
-
-function findReplacement(pair, steps) {
-  const pairRules = rules[pair];
-  cacheCount.checked++;
-  if (!pairRules) {
-    // console.log('None ', pair, steps, pair[0] + endChar);
-    return pair;
-  }
-  const lastStep = findLastStep(steps, pairRules);
-  const lastResult = pairRules[lastStep];
-  if (lastStep === steps) {
-    cacheCount.found++;
-    return lastResult;
-  }
-  const remainingSteps = steps - lastStep;
-  const result = takeSteps(lastResult, remainingSteps);
-  pairRules[steps] = result;
-  return result;
-}
-
-function takeStep(tpl) {
-  const replaced = pairwise(tpl).map((pair) => {
-    const insertChar = rules[pair][0];
-    const endChar = pair[1];
-    return insertChar !== undefined ? `${insertChar}${endChar}` : endChar;
-  });
-  return `${tpl[0]}${replaced.join('')}`;
-}
-
-function takeSteps(tpl, steps) {
-  const replaced = pairwise(tpl).map((pair) => findReplacement(pair, steps));
-  return replaced.map((s, i) => (i > 0 ? s.slice(1) : s)).join('');
-}
-
-function countChars(str) {
+function initialCount(tpl) {
   const result = {};
-  Array.from(str).forEach((c) => {
-    result[c] = (result[c] || 0) + 1;
+  pairwise(tpl).forEach((pair) => {
+    result[pair] = (result[pair] || 0) + 1;
   });
   return result;
 }
 
-function solveSteps(n, simple) {
-  const str = simple
-    ? Array(n).fill().reduce(takeStep, template)
-    : takeSteps(template, n);
-  const counts = countChars(str);
-  const sortedKeys = Object.keys(counts).sort((a, b) => counts[a] - counts[b]); // From least common to most common
-  const sortedCounts = sortedKeys.map((key) => counts[key]);
+function solveSteps(n) {
+  const pairCounts = Array(n).fill().reduce(replaceAllPairs, initialCount(template));
+  const charCounts = { [template[0]]: 1 };
+  forEach(pairCounts, (count, pair) => {
+    const ch = pair[1];
+    charCounts[ch] = (charCounts[ch] || 0) + count;
+  });
+  const len = Object.values(charCounts).reduce((s, v) => s + v, 0);
+  console.log(len, charCounts);
+  const sortedKeys = Object.keys(charCounts)
+    .sort((a, b) => charCounts[a] - charCounts[b]); // From least common to most common
+  const sortedCounts = sortedKeys.map((key) => charCounts[key]);
   return sortedCounts[sortedCounts.length - 1] - sortedCounts[0];
 }
 
-const SIMPLE = 0;
-
-showTimedSolution(1, () => solveSteps(10, SIMPLE));
-showTimedSolution(2, () => solveSteps(20, SIMPLE));
-
-// showTimedSolution(2, () => solveSteps(20, SIMPLE));
-
-console.log(cacheCount);
+showTimedSolution(1, () => solveSteps(10));
+showTimedSolution(2, () => solveSteps(40));
