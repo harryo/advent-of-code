@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // const readFile = require('../../helpers/readFile');
 const createArray = require('../../helpers/createArray');
 const { getAdjacent, DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
@@ -28,20 +29,20 @@ function cellsFromMatrix(matrix) {
  * @param {*} cell
  * @returns
  */
-function checkRoute(route, cell) {
-  const newRoute = { path: [...route.path, cell], risk: route.risk + cell.risk };
-  const replace = !cell.route || cell.route.risk > newRoute.risk;
+function checkRoute(routeRisk, cell) {
+  const newRouteRisk = routeRisk + cell.risk;
+  const replace = cell.routeRisk === undefined || cell.routeRisk > newRouteRisk;
   if (replace) {
-    cell.route = newRoute;
+    cell.routeRisk = newRouteRisk;
   }
   return replace && cell;
 }
 
-const takeStep = (cell) => cell.adj.map((adj) => checkRoute(cell.route, adj)).filter(Boolean);
+const takeStep = (cell) => cell.adj.map((adj) => checkRoute(cell.routeRisk, adj)).filter(Boolean);
 
 function solveForMatrix(matrix) {
   const cells = cellsFromMatrix(matrix);
-  cells[0].route = { path: [cells[0]], risk: 0 };
+  cells[0].routeRisk = 0;
   // FIFO queue with cells to be checked for route extension
   const queue = [cells[0]];
   while (queue.length > 0) {
@@ -49,7 +50,7 @@ function solveForMatrix(matrix) {
     const updatedCells = takeStep(cell);
     queue.push(...updatedCells);
   }
-  return cells[cells.length - 1].route.risk;
+  return cells[cells.length - 1].routeRisk;
 }
 
 function solve1() {
