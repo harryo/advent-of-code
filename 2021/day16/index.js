@@ -1,4 +1,5 @@
 // const readFile = require('../../helpers/readFile');
+const createArray = require('../../helpers/createArray');
 const readLines = require('../../helpers/readLines');
 const showTimedSolution = require('../../helpers/showTimedSolution');
 
@@ -43,7 +44,7 @@ function parseLine(line) {
 
   function bySubPacketCount() {
     const spCount = readNumber(11);
-    return Array(spCount).fill().map(() => readPacket());
+    return createArray(spCount).map(readPacket);
   }
 
   function readSubPackets() {

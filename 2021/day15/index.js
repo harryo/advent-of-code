@@ -1,4 +1,5 @@
 // const readFile = require('../../helpers/readFile');
+const createArray = require('../../helpers/createArray');
 const { getAdjacent, DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
 const readLines = require('../../helpers/readLines');
 const showTimedSolution = require('../../helpers/showTimedSolution');
@@ -36,7 +37,7 @@ function checkRoute(route, cell) {
   return replace && cell;
 }
 
-const takeStep = (cell) => cell.adj.map(adj => checkRoute(cell.route, adj)).filter(Boolean);
+const takeStep = (cell) => cell.adj.map((adj) => checkRoute(cell.route, adj)).filter(Boolean);
 
 function solveForMatrix(matrix) {
   const cells = cellsFromMatrix(matrix);
@@ -63,17 +64,17 @@ function solve1() {
  */
 function expand(o, inc) {
   const len = o.length;
-  const result = Array(MUL * len).fill();
-  result.forEach((dummy, i) => {
+  const result = createArray(MUL * len);
+  result.forEach((i) => {
     result[i] = i < len ? o[i] : inc(result[i - len]);
   });
   return result;
 }
 
-const incRisk = v => (v % 9) + 1;
-const incRiskRow = row => row.map(incRisk);
-const expandRow = row => expand(row, incRisk)
-const expandMatrix = matrix => expand(matrix, incRiskRow)
+const incRisk = (v) => (v % 9) + 1;
+const incRiskRow = (row) => row.map(incRisk);
+const expandRow = (row) => expand(row, incRisk);
+const expandMatrix = (matrix) => expand(matrix, incRiskRow);
 
 function solve2() {
   const matrix2 = expandMatrix(matrix1.map(expandRow));
