@@ -1,3 +1,12 @@
+/**
+ * Improvements
+ * Time before: ca. 60s
+ * 1. Calculate new path only when route is replaced, time ca. 15s
+ * 2. Ignore calculating path (1.1s)
+ * 3. Use standard sorting of queue (far less loops, but sorting slow, 3.8s)
+ * 4. Use sorted insert of new cells (0.6s)
+ */
+
 /* eslint-disable no-param-reassign */
 // const readFile = require('../../helpers/readFile');
 const createArray = require('../../helpers/createArray');
@@ -6,6 +15,8 @@ const readLines = require('../../helpers/readLines');
 const showTimedSolution = require('../../helpers/showTimedSolution');
 
 const MUL = 5;
+
+const sort = 2; // 0: none, 1: using array.sort, 2: using sorted inserts
 
 const matrix1 = readLines().map((line) => Array.from(line).map(Number));
 
@@ -18,7 +29,7 @@ function cellsFromMatrix(matrix) {
   const filled = matrix.map((row, r) => row.map((risk, c) => ({ r, c, risk })));
   const result = filled.flat();
   result.forEach((cell) => {
-    cell.adj = getAdjacent(cell, filled, DIRECTIONS_SQUARE);
+    cell.adj = getAdjacent(cell, filled, DIRECTIONS_SQUARE).sort((a, b) => a.risk - b.risk);
   });
   return result;
 }
@@ -29,28 +40,56 @@ function cellsFromMatrix(matrix) {
  * @param {*} cell
  * @returns
  */
-function checkRoute(routeRisk, cell) {
-  const newRouteRisk = routeRisk + cell.risk;
-  const replace = cell.routeRisk === undefined || cell.routeRisk > newRouteRisk;
+function checkRoute(route, cell) {
+  const routeRisk = route.risk + cell.risk;
+  const replace = !cell.route || cell.route.risk > routeRisk;
   if (replace) {
-    cell.routeRisk = newRouteRisk;
+    // cell.route = { path: [...route.path, cell], risk: routeRisk };
+    cell.route = { risk: routeRisk };
   }
   return replace && cell;
 }
 
-const takeStep = (cell) => cell.adj.map((adj) => checkRoute(cell.routeRisk, adj)).filter(Boolean);
+const takeStep = (cell) => cell.adj.map((adj) => checkRoute(cell.route, adj)).filter(Boolean);
 
 function solveForMatrix(matrix) {
   const cells = cellsFromMatrix(matrix);
-  cells[0].routeRisk = 0;
+  cells[0].route = { path: [cells[0]], risk: 0 };
+  const target = cells[cells.length - 1];
   // FIFO queue with cells to be checked for route extension
   const queue = [cells[0]];
+  let count = 0;
+
+  function insertSorted(list) {
+    let ptr = 0;
+    list.forEach((cell) => {
+      const { risk } = cell.route;
+      const len = queue.length;
+      while (ptr < len && queue[ptr].route.risk < risk) {
+        ptr++;
+      }
+      queue.splice(ptr, 0, cell);
+    });
+  }
+
   while (queue.length > 0) {
     const cell = queue.shift();
+    count++;
+    if (sort > 0 && cell === target) {
+      break;
+    }
     const updatedCells = takeStep(cell);
-    queue.push(...updatedCells);
+    if (sort === 2) {
+      insertSorted(updatedCells);
+    } else {
+      queue.push(...updatedCells);
+      if (sort === 1) {
+        queue.sort((a, b) => a.route.risk - b.route.risk);
+      }
+    }
   }
-  return cells[cells.length - 1].routeRisk;
+  console.log('count', count);
+  return target.route.risk;
 }
 
 function solve1() {
