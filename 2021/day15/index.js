@@ -17,7 +17,6 @@ function cellsFromMatrix(matrix) {
   const result = filled.flat();
   result.forEach((cell) => {
     cell.adj = getAdjacent(cell, filled, DIRECTIONS_SQUARE);
-    delete cell.route;
   });
   return result;
 }
