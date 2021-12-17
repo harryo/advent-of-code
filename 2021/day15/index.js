@@ -16,7 +16,7 @@ const showTimedSolution = require('../../helpers/showTimedSolution');
 
 const MUL = 5;
 
-const sort = 2; // 0: none, 1: using array.sort, 2: using sorted inserts
+const sort = -1; // -1: no sort, but find minimum, 0: none, 1: using array.sort, 2: using sorted inserts
 
 const matrix1 = readLines().map((line) => Array.from(line).map(Number));
 
@@ -60,6 +60,21 @@ function solveForMatrix(matrix) {
   const queue = [cells[0]];
   let count = 0;
 
+  function getMin() {
+    let min = Infinity;
+    let idx;
+    let result;
+    queue.forEach((p, i) => {
+      if (p.route.risk < min) {
+        min = p.route.risk;
+        result = p;
+        idx = i;
+      }
+    });
+    queue.splice(idx, 1);
+    return result;
+  }
+
   function insertSorted(list) {
     let ptr = 0;
     list.forEach((cell) => {
@@ -73,7 +88,7 @@ function solveForMatrix(matrix) {
   }
 
   while (queue.length > 0) {
-    const cell = queue.shift();
+    const cell = sort < 0 ? getMin() : queue.shift();
     count++;
     if (sort > 0 && cell === target) {
       break;
