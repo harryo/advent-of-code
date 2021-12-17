@@ -12,6 +12,7 @@ console.log({
   xMin, xMax, yMin, yMax,
 });
 
+
 // abc formula to solve a quadratic equation a * x^2 + b * x + c = 0, has answers for both s = 1 and s = -1
 // https://nl.wikipedia.org/wiki/Vierkantsvergelijking
 function abcFormula(a, b, c, s = 1) {
@@ -28,9 +29,6 @@ function posX(v, t) {
   return (t < v ? posY(v, t) : ((v * v + v) / 2));
 }
 
-// Get velocity to be at pos d at time t
-const velocity = (d, t) => (d + ((t * (t - 1)) / 2)) / t;
-
 // Get minimum velocity to reach a distance, i.e. position reached when v = 0, after v seconds, so v = t
 // ((v * v + v) / 2)) = d, or v^2 + v - 2 * d = 0, must be positive, so s = 1 (default);
 const getMinVelocity = (d) => abcFormula(1, 1, -2 * d);
@@ -42,7 +40,7 @@ const vyMax = yMin < 0 ? -yMin + 1 : yMax;
 const vyMin = yMin < 0 ? yMin : Math.ceil(getMinVelocity(yMin));
 
 // Min value for vx to reach xMin
-const vxMin = Math.ceil(abcFormula(1, 1, -2 * xMin)); // min vx to stop after xMin
+const vxMin = Math.ceil(getMinVelocity(xMin)); // min vx to stop after xMin
 
 /**
  * Check whether this y velocity has an x velocity which makes it reach the target
