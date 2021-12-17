@@ -13,9 +13,10 @@ console.log({
 });
 
 // abc formula to solve a quadratic equation a * x^2 + b * x + c = 0, has answers for both s = 1 and s = -1
+// https://nl.wikipedia.org/wiki/Vierkantsvergelijking
 function abcFormula(a, b, c, s = 1) {
-  const sqrt = Math.sqrt(b * b - 4 * a * c);
-  return (-b + s * sqrt) / (2 * a);
+  const d = b * b - 4 * a * c;
+  return (-b + s * Math.sqrt(d)) / (2 * a);
 }
 
 // Get Y position of probe at time t
@@ -42,7 +43,6 @@ const vyMin = yMin < 0 ? yMin : Math.ceil(getMinVelocity(yMin));
 
 // Min value for vx to reach xMin
 const vxMin = Math.ceil(abcFormula(1, 1, -2 * xMin)); // min vx to stop after xMin
-// Given a time t, vxMax is the velocity at which xMmax is reached at time t
 
 /**
  * Check whether this y velocity has an x velocity which makes it reach the target
@@ -60,13 +60,14 @@ function checkvyo(vy) {
 }
 
 function findXinTarget(t, resultSet) {
-  // Last vX is at xMax at time t, t * vx - (t * (t - 1)) / 2 = xMax
-  const vxLast = Math.floor(velocity(xMax, t));
-  for (let vx = vxMin; vx <= vxLast; vx++) {
-    const x = posX(vx, t);
-    if (x >= xMin && x <= xMax) {
+  let vx = vxMin;
+  let x = posX(vx, t);
+  while (x <= xMax) {
+    if (x >= xMin) {
       resultSet.add(vx);
     }
+    vx++;
+    x = posX(vx, t);
   }
 }
 
