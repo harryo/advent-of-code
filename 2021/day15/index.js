@@ -13,6 +13,7 @@ const createArray = require('../../helpers/createArray');
 const { getAdjacent, DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
 const readLines = require('../../helpers/readLines');
 const showTimedSolution = require('../../helpers/showTimedSolution');
+require('../../helpers/sortBy');
 
 const MUL = 5;
 
@@ -99,7 +100,7 @@ function solveForMatrix(matrix) {
     } else {
       queue.push(...updatedCells);
       if (sort === 1) {
-        queue.sort((a, b) => a.route.risk - b.route.risk);
+        queue.sortBy((a) => a.route.risk);
       }
     }
   }

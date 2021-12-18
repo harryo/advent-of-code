@@ -1,5 +1,6 @@
 const readLines = require('../../helpers/readLines');
 const showTimedSolution = require('../../helpers/showTimedSolution');
+require('../../helpers/sortBy');
 
 let index = 0;
 
@@ -60,7 +61,7 @@ function getBasin(lowPoint) {
 function solve2() {
   return lowPoints
     .map(getBasin)
-    .sort((a, b) => b.length - a.length)
+    .sortBy('-length')
     .slice(0, 3)
     .reduce((p, b) => p * b.length, 1);
 }

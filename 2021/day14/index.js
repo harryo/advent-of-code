@@ -1,6 +1,7 @@
 // const readFile = require('../../helpers/readFile');
 // const readLines = require('../../helpers/readLines');
-const forEach = require('../../helpers/forEach');
+require('../../helpers/forEach');
+require('../../helpers/sortBy');
 const readBlocks = require('../../helpers/readBlocks');
 const showTimedSolution = require('../../helpers/showTimedSolution');
 
@@ -51,14 +52,14 @@ function initialCount(tpl) {
 function solveSteps(n) {
   const pairCounts = Array(n).fill().reduce(replaceAllPairs, initialCount(template));
   const charCounts = { [template[0]]: 1 };
-  forEach(pairCounts, (count, pair) => {
+  pairCounts.forEach((count, pair) => {
     const ch = pair[1];
     charCounts[ch] = (charCounts[ch] || 0) + count;
   });
   const len = Object.values(charCounts).reduce((s, v) => s + v, 0);
   console.log(len, charCounts);
   const sortedKeys = Object.keys(charCounts)
-    .sort((a, b) => charCounts[a] - charCounts[b]); // From least common to most common
+    .sortBy((a) => charCounts[a]); // From least common to most common
   const sortedCounts = sortedKeys.map((key) => charCounts[key]);
   return sortedCounts[sortedCounts.length - 1] - sortedCounts[0];
 }
