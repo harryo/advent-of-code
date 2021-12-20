@@ -23,80 +23,94 @@ const scanners = readBlocks()
 Object.assign(scanners[0], { location: [0, 0, 0], refBeacons: scanners[0].beacons });
 
 const beaconDiff = (b1, b2) => createArray(3).map((i) => b2[i] - b1[i]);
-const relativeLocation = (l1, l2) => createArray(3).map((i) => l1[i] + l2[i]);
+const addLocation = (loc, b) => createArray(3).map((i) => loc[i] + b[i]);
+const manhattanDistance = (p1, p2) => createArray(3).reduce((s, i) => s + Math.abs(p1[i] - p2[i]), 0);
 
+/**
+ * Get distance in each direction from each beacon to all other beacons with higher x
+ * @param {*} beacons
+ * @returns
+ */
 function getBeaconDistances(beacons) {
   const size = beacons.length;
+  // Get beacon distances, order by lowest x of on end, only when at least 11 other points with higher x
   const sortedBeacons = [...beacons].sortBy((b) => b);
-  return createArray(size)
-    .flatMap((i) => createArray(size - i - 1)
-      .map((j) => ({ loc: sortedBeacons[i], dist: beaconDiff(sortedBeacons[i], sortedBeacons[i + j + 1]) })));
+  return createArray(size - 11)
+    .map((i) => ({
+      loc: sortedBeacons[i],
+      distances: createArray(size - i - 1)
+        .map((j) => beaconDiff(sortedBeacons[i], sortedBeacons[i + j + 1]).toString()),
+    }));
 }
 
-function getPossibleOrigins(beacons, refBeaconDistances) {
-  return getBeaconDistances(beacons)
-    .map((beacon) => {
-      const key = beacon.dist.toString();
-      const ref = refBeaconDistances[key];
-      return ref && beaconDiff(beacon.loc, ref[0].loc);
-    })
-    .filter(Boolean);
+function countOverlap(a1, a2) {
+  return a1.filter((d) => a2.includes(d)).length;
+}
+
+function checkMatchingDistances(beacons, refBeaconDistances) {
+  const beaconDistances = getBeaconDistances(beacons);
+  let result;
+  beaconDistances
+    .some((distancesFromLocation) => refBeaconDistances
+      .some((distancesFromRef) => {
+        const overlap = countOverlap(distancesFromLocation.distances, distancesFromRef.distances);
+        const found = overlap >= 11;
+        if (found) {
+          result = beaconDiff(distancesFromLocation.loc, distancesFromRef.loc);
+        }
+        return found;
+      }));
+  return result;
 }
 
 // Locate scanner
-function locateScanner(scanner, ref) {
+function locateScanner(scanner, refBeaconDistances) {
   const { beacons } = scanner;
-  const { location, beaconDistances } = ref;
   return transformLocations(beacons)
     .some((trfb) => {
-      const origins = getPossibleOrigins(trfb, beaconDistances);
-      if (origins.length < 66) {
-        return false;
+      const location = checkMatchingDistances(trfb, refBeaconDistances);
+      if (location) {
+        scanner.location = location;
+        scanner.refBeacons = trfb.map((b) => addLocation(location, b));
+        return true;
       }
-      scanner.location = relativeLocation(location, origins[0]);
-      scanner.refBeacons = beacons;
-      return true;
+      return false;
     });
 }
 
 function locateScanners() {
   const solved = [scanners[0]];
   let ptr = 0;
-
   while (solved.length < scanners.length && ptr < solved.length) {
-    const ref = {
-      beaconDistances: getBeaconDistances(solved[ptr].refBeacons).groupBy((d) => d.dist.toString()),
-      location: solved[ptr].location,
-    };
+    const refBeaconDistances = getBeaconDistances(solved[ptr].refBeacons);
     scanners
-      .filter((s) => !s.refBeacons && locateScanner(s, ref))
+      .filter((s, i) => !s.refBeacons && locateScanner(s, refBeaconDistances, i))
       .forEach((s) => solved.push(s));
     ptr++;
   }
 }
 
-// scanner 1:  68,-1246,-43
-// scanner 2:  1105,-1205,1229
-// scanner 3:  -92,-2380,-20
-// scanner 4:  -20,-1133,1061
+console.time('Preparation');
 
-function countBeacons() {
+locateScanners();
+
+console.timeEnd('Preparation');
+
+function solve1() {
   const allBeacons = scanners.flatMap((s) => s.refBeacons.map((b) => b.toString()));
   const unique = new Set(allBeacons);
   return unique.size;
 }
 
-console.time('Preparation');
-
-console.timeEnd('Preparation');
-
-function solve1() {
-  locateScanners();
-  return countBeacons();
-}
-
 function solve2() {
-  return 'Pending';
+  let maxDist = 0;
+  scanners.forEach((s1, i) => scanners.slice(i + 1).forEach((s2) => {
+    const mDist = manhattanDistance(s1.location, s2.location);
+    if (mDist > maxDist) {
+      maxDist = mDist;
+    }
+  }));
+  return maxDist;
 }
 
 showTimedSolution(1, () => solve1());
