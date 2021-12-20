@@ -4,7 +4,14 @@
  * @returns
  */
 
-function compare(a, b) {
+function compare(a, b, i = 0) {
+  if (Array.isArray(a)) {
+    const result = compare(a[i], b[i]);
+    if (result !== 0 || i === a.length - 1) {
+      return result;
+    }
+    return compare(a, b, i + 1);
+  }
   if (a > b) {
     return 1;
   }
