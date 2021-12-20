@@ -1,12 +1,12 @@
 const createArray = require('../../helpers/createArray');
 
 const transformations = [
-  ([x, y, z]) => [[x, y, z], [z, y, -x], [y, -x, -z]], // Different axis up
+  ([x, y, z]) => [[x, y, z], [y, z, x], [z, x, y]], // Different axis up
   ([x, y, z]) => [[x, y, z], [x, -z, y], [x, -y, -z], [x, z, -y]], // Rotate around x-axis
-  ([x, y, z]) => [[x, y, z], [-x, -y, -z]], // Upside down
+  ([x, y, z]) => [[x, y, z], [-x, -z, -y]], // Upside down
 ];
 
-const orientations1 = (loc) => transformations
+const orientations = (loc) => transformations
   .reduce(
     (acc, tf) => acc
       .map((xyz) => tf(xyz))

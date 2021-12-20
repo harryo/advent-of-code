@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable prefer-destructuring */
 // const readFile = require('../../helpers/readFile');
 // const readLines = require('../../helpers/readLines');
 
@@ -17,82 +19,80 @@ const scanners = readBlocks()
       .map(Number)))
   .map((beacons) => ({ beacons }));
 
+// Make scanner 0 the references for location and orientation
+Object.assign(scanners[0], { location: [0, 0, 0], refBeacons: scanners[0].beacons });
+
 const beaconDiff = (b1, b2) => createArray(3).map((i) => b2[i] - b1[i]);
+const relativeLocation = (l1, l2) => createArray(3).map((i) => l1[i] + l2[i]);
 
 function getBeaconDistances(beacons) {
   const size = beacons.length;
+  const sortedBeacons = [...beacons].sortBy((b) => b);
   return createArray(size)
-    .map((i) => createArray(size)
-      .filter((j) => i !== j)
-      .map((j) => ({ loc: beacons[i], dist: beaconDiff(beacons[i], beacons[j]) })));
+    .flatMap((i) => createArray(size - i - 1)
+      .map((j) => ({ loc: sortedBeacons[i], dist: beaconDiff(sortedBeacons[i], sortedBeacons[i + j + 1]) })));
 }
 
-// Make scanner 0 the references for location and orientation
-Object.assign(scanners[0], { location: [0, 0, 0], orientation: 0 });
-
-const allBeaconDistances = scanners
-  .flatMap((scanner, i) => {
-    const options = i === 0 ? [scanner.beacons] : transformLocations(scanner.beacons);
-    return options
-      .flatMap((l, j) => getBeaconDistances(l)
-        .flatMap((o) => o
-          .map((d) => ({
-            ...d, scanner, si: i, oi: j,
-          }))));
-  });
-
-const byDistance = {};
-allBeaconDistances.forEach((d) => {
-  const key = d.dist.toString();
-  if (byDistance[key]) {
-    byDistance[key].push(d);
-  } else {
-    byDistance[key] = [d];
-  }
-});
-
-const seenByMore = Object.keys(byDistance)
-  .filter((d) => {
-    const list = byDistance[d];
-    return new Set(list.map((s) => s.si)).size > 1;
-  })
-  .map((d) => byDistance[d]);
-
-const seenByRef = Object.keys(byDistance)
-  .filter((d) => {
-    const list = byDistance[d];
-    return list.some((s) => s.si === 0) && list.some((s) => s.si !== 0);
-  })
-  .map((d) => byDistance[d]);
-
-debugger;
-function getPossibleOrigins(beacons) {
-  const result = [];
-  getBeaconDistances(beacons).forEach((beacon, dist) => {
-    const ref = refBeaconDistances[dist];
-    if (ref) {
-      result.push(beaconDiff(beacon, ref));
-    }
-  });
-  return result.lenght > 0 && result;
+function getPossibleOrigins(beacons, refBeaconDistances) {
+  return getBeaconDistances(beacons)
+    .map((beacon) => {
+      const key = beacon.dist.toString();
+      const ref = refBeaconDistances[key];
+      return ref && beaconDiff(beacon.loc, ref[0].loc);
+    })
+    .filter(Boolean);
 }
 
 // Locate scanner
-function locateScanner(scanner) {
+function locateScanner(scanner, ref) {
   const { beacons } = scanner;
-  const options = transformLocations(beacons);
-  const possibleOrigins = options.map(getPossibleOrigins).filter(Boolean);
-  debugger;
+  const { location, beaconDistances } = ref;
+  return transformLocations(beacons)
+    .some((trfb) => {
+      const origins = getPossibleOrigins(trfb, beaconDistances);
+      if (origins.length < 66) {
+        return false;
+      }
+      scanner.location = relativeLocation(location, origins[0]);
+      scanner.refBeacons = beacons;
+      return true;
+    });
 }
 
-locateScanner(scanners[2]);
+function locateScanners() {
+  const solved = [scanners[0]];
+  let ptr = 0;
+
+  while (solved.length < scanners.length && ptr < solved.length) {
+    const ref = {
+      beaconDistances: getBeaconDistances(solved[ptr].refBeacons).groupBy((d) => d.dist.toString()),
+      location: solved[ptr].location,
+    };
+    scanners
+      .filter((s) => !s.refBeacons && locateScanner(s, ref))
+      .forEach((s) => solved.push(s));
+    ptr++;
+  }
+}
+
+// scanner 1:  68,-1246,-43
+// scanner 2:  1105,-1205,1229
+// scanner 3:  -92,-2380,-20
+// scanner 4:  -20,-1133,1061
+
+function countBeacons() {
+  const allBeacons = scanners.flatMap((s) => s.refBeacons.map((b) => b.toString()));
+  const unique = new Set(allBeacons);
+  return unique.size;
+}
 
 console.time('Preparation');
 
 console.timeEnd('Preparation');
 
 function solve1() {
-  return 'Pending';
+  locateScanners();
+  return countBeacons();
 }
 
 function solve2() {
