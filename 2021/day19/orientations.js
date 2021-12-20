@@ -3,7 +3,7 @@ const createArray = require('../../helpers/createArray');
 const transformations = [
   ([x, y, z]) => [[x, y, z], [y, z, x], [z, x, y]], // Different axis up
   ([x, y, z]) => [[x, y, z], [x, -z, y], [x, -y, -z], [x, z, -y]], // Rotate around x-axis
-  ([x, y, z]) => [[x, y, z], [-x, -z, -y]], // Upside down
+  ([x, y, z]) => [[x, y, z], [-x, -y, z]], // Rotate on other axis
 ];
 
 const orientations = (loc) => transformations
@@ -14,17 +14,8 @@ const orientations = (loc) => transformations
     [loc],
   );
 
-const orientations2 = ([x, y, z]) => [[x, z, -y], [-z, x, -y], [-x, -z, -y],
-  [z, -x, -y], [z, -y, x], [y, z, x],
-  [-z, y, x], [-y, -z, x], [-y, x, z],
-  [-x, -y, z], [y, -x, z], [x, y, z],
-  [-z, -x, y], [x, -z, y], [z, x, y],
-  [-x, z, y], [-x, y, -z], [-y, -x, -z],
-  [x, -y, -z], [y, x, -z], [y, -z, -x],
-  [z, y, -x], [-y, z, -x], [-z, -y, -x]];
-
 function transformLocations(locations) {
-  const options = locations.map(orientations2);
+  const options = locations.map(orientations);
   return createArray(24).map((i) => options.map((or) => or[i]));
 }
 
