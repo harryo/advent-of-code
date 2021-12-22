@@ -3,6 +3,19 @@
  * @param {int} n
  * @returns
  */
-const createArray = (n) => Array(n).fill().map((dummy, i) => i);
+function createArray(n) {
+  if (typeof n === 'number') {
+    return Array(n).fill().map((dummy, i) => i);
+  }
+  if (Array.isArray(n)) {
+    const [min, max] = n;
+    if (min > max) {
+      return [];
+    }
+    const size = max - min + 1;
+    return Array(size).fill().map((dummy, i) => i + min);
+  }
+  throw new Error('Invalid type', typeof n);
+}
 
 module.exports = createArray;
