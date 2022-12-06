@@ -1,10 +1,8 @@
 // const readFile = require('../../helpers/readFile');
 // const readLines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+const timedLog = require('../../helpers/timerLog');
 
-console.time('Preparation');
-
-console.timeEnd('Preparation');
+timedLog('Preparation');
 
 function solve1() {
   return 'Pending';
@@ -14,6 +12,5 @@ function solve2() {
   return 'Pending';
 }
 
-showTimedSolution(1, () => solve1());
-
-showTimedSolution(2, () => solve2());
+timedLog('Part 1:', solve1());
+timedLog('Part 2:', solve2());

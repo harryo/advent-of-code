@@ -1,6 +1,6 @@
 const readFile = require('../../helpers/readFile');
 // const readLines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+const timedLog = require('../../helpers/timerLog');
 
 /**
  * Return index of first character that is duplicated in arr
@@ -12,22 +12,20 @@ function findDuplicate(arr) {
 }
 
 function findMarker(arr, size) {
-  let idx = 0;
-  while (idx < arr.length) {
-    const duplicateIndex = findDuplicate(arr.slice(idx, idx + size));
+  let idx = size;
+  while (idx <= arr.length) {
+    const duplicateIndex = findDuplicate(arr.slice(idx - size, idx));
     if (duplicateIndex === -1) {
-      break; // Found marker
+      return idx; // Found marker
     }
     idx += duplicateIndex + 1;
   }
-  return idx + size;
+  throw new Error('Marker not found');
 }
-
-console.time('Preparation');
 
 const data = readFile().split('');
 
-console.timeEnd('Preparation');
+timedLog('Preparation');
 
 function solve1() {
   return findMarker(data, 4);
@@ -37,6 +35,5 @@ function solve2() {
   return findMarker(data, 14);
 }
 
-showTimedSolution(1, () => solve1());
-
-showTimedSolution(2, () => solve2());
+timedLog('Part 1:', solve1());
+timedLog('Part 2:', solve2());
