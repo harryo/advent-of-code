@@ -1,6 +1,6 @@
 const readFile = require('../../helpers/readFile');
 // const readLines = require('../../helpers/readLines');
-const timedLog = require('../../helpers/timerLog');
+const timedLog = require('../../helpers/timedLog');
 
 /**
  * Return index of first character that is duplicated in arr
