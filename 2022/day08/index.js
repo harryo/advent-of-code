@@ -1,53 +1,51 @@
 const readLines = require('../../helpers/readLines');
 const timedLog = require('../../helpers/timedLog');
+const { DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
 
 const data = readLines().map((line) => line.split('').map(Number));
 
-const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+function loopDirection(r, c, dir, cb) {
+  const [dr, dc] = dir;
+  let [nr, nc] = [r + dr, c + dc];
+  while (nr >= 0 && nr < data.length && nc >= 0 && nc < data[0].length && cb(nr, nc)) {
+    nr += dr;
+    nc += dc;
+  }
+}
 
 timedLog('Preparation');
 
 function isVisibleFromDirection(r, c, dir) {
   const v = data[r][c];
-  const [dr, dc] = dir;
-  let [nr, nc] = [r + dr, c + dc];
-  while (nr >= 0 && nr < data.length && nc >= 0 && nc < data[0].length) {
-    if (data[nr][nc] >= v) {
-      return false;
-    }
-    nr += dr;
-    nc += dc;
-  }
-  return true;
+  let isVisible = true;
+  loopDirection(r, c, dir, (nr, nc) => {
+    isVisible = data[nr][nc] < v;
+    return isVisible;
+  });
+  return isVisible;
 }
 
 function solve1() {
   return data
     .flatMap((row, r) => row
-      .filter((v, c) => directions.some((dir) => isVisibleFromDirection(r, c, dir))))
+      .filter((v, c) => DIRECTIONS_SQUARE.some((dir) => isVisibleFromDirection(r, c, dir))))
     .length;
 }
 
 function viewInDirection(r, c, dir) {
   const v = data[r][c];
-  const [dr, dc] = dir;
-  let [nr, nc] = [r + dr, c + dc];
-  let result = 0;
-  while (nr >= 0 && nr < data.length && nc >= 0 && nc < data[0].length) {
-    result++;
-    if (data[nr][nc] >= v) {
-      break;
-    }
-    nr += dr;
-    nc += dc;
-  }
-  return result;
+  let view = 0;
+  loopDirection(r, c, dir, (nr, nc) => {
+    view++;
+    return data[nr][nc] < v;
+  });
+  return view;
 }
 
 function solve2() {
   return Math.max(...data
     .flatMap((row, r) => row
-      .map((v, c) => directions.map((dir) => viewInDirection(r, c, dir)).reduce((a, b) => a * b, 1))));
+      .map((v, c) => DIRECTIONS_SQUARE.map((dir) => viewInDirection(r, c, dir)).reduce((a, b) => a * b, 1))));
 }
 
 timedLog('Part 1:', solve1());

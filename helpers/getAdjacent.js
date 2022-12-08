@@ -3,7 +3,7 @@
  * @param {*} loc
  * @returns
  */
- function getAdjacent(loc, matrix, directions) {
+function getAdjacent(loc, matrix, directions) {
   const { r, c } = loc;
   return directions
     .map((d) => ({ r: r + d[0], c: c + d[1] })) // possible positions
@@ -15,6 +15,8 @@ const DIRECTIONS_SQUARE = [[-1, 0], [1, 0], [0, -1], [0, 1]];
 
 const DIRECTIONS_DIAGONAL = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
 
-const DIRECTIONS_ALL = [...DIRECTIONS_SQUARE, ... DIRECTIONS_DIAGONAL];
+const DIRECTIONS_ALL = [...DIRECTIONS_SQUARE, ...DIRECTIONS_DIAGONAL];
 
-module.exports = { getAdjacent, DIRECTIONS_ALL, DIRECTIONS_DIAGONAL, DIRECTIONS_SQUARE };
+module.exports = {
+  getAdjacent, DIRECTIONS_ALL, DIRECTIONS_DIAGONAL, DIRECTIONS_SQUARE,
+};
