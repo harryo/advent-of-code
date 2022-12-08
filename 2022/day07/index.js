@@ -12,17 +12,17 @@ function addFile(file, size) {
 }
 
 function addDir(dir) {
-  if (!curNode.dirs[dir]) {
-    const dirNode = {
-      parent: curNode,
-      name: dir,
-      dirs: {},
-      files: {},
-    };
-    dirNodes.push(dirNode);
-    curNode.dirs[dir] = dirNode;
+  if (curNode.dirs[dir]) {
+    return;
   }
-  return curNode.dirs[dir];
+  const dirNode = {
+    parent: curNode,
+    name: dir,
+    dirs: {},
+    files: {},
+  };
+  dirNodes.push(dirNode);
+  curNode.dirs[dir] = dirNode;
 }
 
 function getSize(node) {
