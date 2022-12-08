@@ -34,31 +34,40 @@ function getSize(node) {
   return node.size;
 }
 
+function ls(data) {
+  data.forEach((line) => {
+    const [typeOrSize, name] = line.split(' ');
+    if (typeOrSize === 'dir') {
+      addDir(name);
+    } else {
+      addFile(name, Number(typeOrSize));
+    }
+  });
+}
+
+function cd(dir) {
+  switch (dir) {
+    case '..':
+      curNode = curNode.parent;
+      break;
+    case '/':
+      curNode = rootNode;
+      break;
+    default:
+      addDir(dir);
+      curNode = curNode.dirs[dir];
+  }
+}
+
 commands.forEach(([cmdLine, ...data]) => {
   const [cmd, param] = cmdLine.split(' ');
   switch (cmd) {
     case 'ls':
-      data.forEach((line) => {
-        const [typeOrSize, name] = line.split(' ');
-        if (typeOrSize === 'dir') {
-          addDir(name);
-        } else {
-          addFile(name, Number(typeOrSize));
-        }
-      });
-      return;
+      ls(data);
+      break;
     case 'cd':
-      if (param === '..') {
-        curNode = curNode.parent;
-        return;
-      }
-      if (param === '/') {
-        curNode = rootNode;
-        return;
-      }
-      addDir(param);
-      curNode = curNode.dirs[param];
-      return;
+      cd(param);
+      break;
     default:
       throw new Error('Invalid command');
   }
