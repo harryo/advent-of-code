@@ -3,8 +3,12 @@ const readBlocks = require('../../helpers/readBlocks');
 const timedLog = require('../../helpers/timedLog');
 const loop = require('../../helpers/loop');
 
-function getMonkeys() {
-  return readBlocks().map(parseMonkey);
+function camelize(str) {
+  return str.toLowerCase().replace(/\s+(\w)/, (m) => m[1].toUpperCase());
+}
+
+function getNumbers(str) {
+  return str.match(/\d+/g)?.map(Number);
 }
 
 function getOperation(str) {
@@ -28,19 +32,19 @@ function parseMonkey(blk) {
   const result = { count: 0 };
   lines.forEach((line) => {
     const [label, value] = line.split(':').map((s) => s.trim());
-    const key = label.split(' ').pop().toLowerCase();
-    const numbers = value.match(/\d+/g)?.map(Number);
-    switch (key) {
-      case 'items':
-        result[key] = numbers;
+    const numbers = getNumbers(value);
+    switch (label) {
+      case 'Starting items':
+        result.items = numbers;
         return;
-      case 'operation':
+      case 'Operation':
         result.operation = getOperation(value);
         return;
-      case 'test':
-      case 'true':
-      case 'false':
-        [result[key]] = numbers;
+      case 'Test':
+      case 'If true':
+      case 'If false':
+        // eslint-disable-next-line prefer-destructuring
+        result[camelize(label)] = numbers[0];
         return;
       default:
         result.name = label;
@@ -49,16 +53,21 @@ function parseMonkey(blk) {
   return result;
 }
 
+function getMonkeys() {
+  return readBlocks().map(parseMonkey);
+}
+
 function fullRound(monkeys, ggd) {
   monkeys.forEach((monkey) => {
     const {
-      items, operation, test, true: trueValue, false: falseValue,
+      items, operation, test, ifTrue, ifFalse,
     } = monkey;
     items.forEach((item) => {
       monkey.count++;
       const newValue = operation(item);
+      // Take value modulo ggd to avoid extremely large integers in part 2
       const reducedValue = ggd ? newValue % ggd : Math.floor(newValue / 3);
-      const recipient = reducedValue % test === 0 ? trueValue : falseValue;
+      const recipient = reducedValue % test === 0 ? ifTrue : ifFalse;
       monkeys[recipient].items.push(reducedValue);
     });
     monkey.items = [];
