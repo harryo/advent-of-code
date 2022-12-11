@@ -4,13 +4,13 @@ const timedLog = require('../../helpers/timedLog');
 const program = readLines();
 
 let x = 1;
-let cycle = 0;
+let t = 0;
 let signalStrengthSum = 0;
 const pixels = [];
 
 function measure() {
-  if (cycle % 40 === 20) {
-    signalStrengthSum += x * cycle;
+  if (t % 40 === 20) {
+    signalStrengthSum += x * t;
   }
 }
 
@@ -21,15 +21,15 @@ function draw() {
   pixels.push(char);
 }
 
-function noop() {
-  cycle++;
+function cycle() {
+  t++;
   measure();
   draw();
 }
 
 function addx(v) {
-  noop();
-  noop();
+  cycle();
+  cycle();
   x += v;
 }
 
@@ -38,7 +38,7 @@ function run() {
     const [cmd, param] = line.split(' ');
     switch (cmd) {
       case 'noop':
-        noop();
+        cycle();
         return;
       case 'addx':
         addx(Number(param));
