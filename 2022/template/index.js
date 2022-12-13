@@ -1,6 +1,7 @@
-// const readFile = require('../../helpers/readFile');
-// const readLines = require('../../helpers/readLines');
+const { readLines } = require('../../helpers/readInput');
 const timedLog = require('../../helpers/timedLog');
+
+const data = readLines();
 
 timedLog('Preparation');
 

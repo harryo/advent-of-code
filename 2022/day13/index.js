@@ -1,4 +1,4 @@
-const readBlocks = require('../../helpers/readBlocks');
+const { readBlocks } = require('../../helpers/readInput');
 const timedLog = require('../../helpers/timedLog');
 
 const pairs = readBlocks().map((block) => block.split(/\n/).map((l) => JSON.parse(l)));
