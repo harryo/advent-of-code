@@ -3,6 +3,8 @@ const { readLines } = require('../../helpers/readInput');
 const timedLog = require('../../helpers/timedLog');
 const find = require('../../helpers/find');
 
+const takeYourTime = false;
+
 const data = readLines().map(getNumbers);
 
 const getDistance = ([x1, y1], [x2, y2]) => Math.abs(x1 - x2) + Math.abs(y1 - y2);
@@ -45,28 +47,28 @@ function countBlocked(y) {
   return blocked.size;
 }
 
-// function insertRange(ranges, min, max) {
-//   // Find index of first ranges with max >= min - 1
-//   const below = ranges.filter((r) => r[1] < min - 1);
-//   const merge = ranges.filter((r) => r[1] >= min - 1 && r[0] <= max + 1);
-//   const above = ranges.filter((r) => r[0] > max + 1);
-//   const insert = merge.length === 0 ? [min, max]
-//     : [Math.min(min, merge[0][0]), Math.max(max, merge[merge.length - 1][1])];
-//   return [...below, insert, ...above];
-// }
+function insertRange(ranges, min, max) {
+  // Find index of first ranges with max >= min - 1
+  const below = ranges.filter((r) => r[1] < min - 1);
+  const merge = ranges.filter((r) => r[1] >= min - 1 && r[0] <= max + 1);
+  const above = ranges.filter((r) => r[0] > max + 1);
+  const insert = merge.length === 0 ? [min, max]
+    : [Math.min(min, merge[0][0]), Math.max(max, merge[merge.length - 1][1])];
+  return [...below, insert, ...above];
+}
 
-// function findBlockedRanges() {
-//   const result = Array(size + 1).fill([]);
-//   sensors.forEach((s, idx) => {
-//     timedLog('Sensor', idx);
-//     const { x, y, d } = s;
-//     forRange(y, d, true, (i) => {
-//       const dx = d - Math.abs(y - i);
-//       result[i] = insertRange(result[i], Math.max(0, x - dx), Math.min(x + dx, size));
-//     });
-//   });
-//   return result;
-// }
+function findBlockedRanges() {
+  const result = Array(size + 1).fill([]);
+  sensors.forEach((s, idx) => {
+    console.log('Sensor', idx);
+    const { x, y, d } = s;
+    forRange(y, d, true, (i) => {
+      const dx = d - Math.abs(y - i);
+      result[i] = insertRange(result[i], Math.max(0, x - dx), Math.min(x + dx, size));
+    });
+  });
+  return result;
+}
 
 function nearSensor(p) {
   return sensors.some((s) => {
@@ -105,17 +107,23 @@ function solve1() {
 function solve2() {
   const [x, y] = checkPerimeters();
   return x * inputSize + y;
-  // const rowsMinMax = findBlockedRanges();
-  // const openY = rowsMinMax.findIndex((ranges) => ranges.length > 1 || ranges[0][0] > 0 || ranges[0][1] < size);
-  // if (openY === -1) {
-  //   return 'Not found';
-  // }
-  // let openX = rowsMinMax[openY][0][1] + 1;
-  // if (openX > size) {
-  //   openX = 0;
-  // }
-  // return openX * inputSize + openY;
+}
+
+function solve3() {
+  const rowsMinMax = findBlockedRanges();
+  const openY = rowsMinMax.findIndex((ranges) => ranges.length > 1 || ranges[0][0] > 0 || ranges[0][1] < size);
+  if (openY === -1) {
+    return 'Not found';
+  }
+  let openX = rowsMinMax[openY][0][1] + 1;
+  if (openX > size) {
+    openX = 0;
+  }
+  return openX * inputSize + openY;
 }
 
 timedLog('Part 1:', solve1());
 timedLog('Part 2:', solve2());
+if (takeYourTime) {
+  timedLog('Part 3:', solve3());
+}
