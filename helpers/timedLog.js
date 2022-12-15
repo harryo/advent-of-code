@@ -1,7 +1,16 @@
 const times = [performance.now()];
 
+const digits = process.argv[2] === 'sample.txt' ? 1 : 0;
+const options = {
+  roundingMode: 'ceil',
+  minimumFractionDigits: digits,
+  maximumFractionDigits: digits,
+};
+
+const { format } = new Intl.NumberFormat(undefined, options);
+
 function formatTime(t) {
-  return t.toFixed(2).padStart(6);
+  return format(t).padStart(8);
 }
 
 function timedLog(...args) {
