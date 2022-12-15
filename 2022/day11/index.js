@@ -1,14 +1,11 @@
 /* eslint-disable no-param-reassign */
-const readBlocks = require('../../helpers/readBlocks');
+const { readBlocks } = require('../../helpers/readInput');
 const timedLog = require('../../helpers/timedLog');
 const loop = require('../../helpers/loop');
+const getNumbers = require('../../helpers/getNumbers');
 
 function camelize(str) {
   return str.toLowerCase().replace(/\s+(\w)/, (m) => m[1].toUpperCase());
-}
-
-function getNumbers(str) {
-  return str.match(/\d+/g)?.map(Number);
 }
 
 function getOperation(str) {
