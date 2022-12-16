@@ -1,11 +1,12 @@
-const readMatrix = require('../../helpers/readMatrix');
+const { readMatrix } = require('../../helpers/readInput');
 const timedLog = require('../../helpers/timedLog');
 const { getAdjacent, DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
+const traverse = require('../../helpers/traverse');
 
 const matrix = readMatrix();
 const posList = matrix.flat();
 
-timedLog('Preparation');
+timedLog('Preparation', posList.length);
 
 function getElevation(ch) {
   switch (ch) {
@@ -18,35 +19,37 @@ function getElevation(ch) {
   }
 }
 
-function traverse(p0) {
-  const testPaths = [{ pos: p0, length: 0 }];
-  const checkedPoints = new Set([]);
-  let testPtr = 0;
-  while (testPtr < testPaths.length) {
-    const { pos, length } = testPaths[testPtr++];
-    if (checkedPoints.has(pos) || (length === 1 && pos.ch === 'a' && p0.ch === 'a')) {
-      // eslint-disable-next-line no-continue
-      continue;
+function findShortest(p0) {
+  const destinations = new Set([]);
+  const initialState = { pos: p0, length: 0 };
+  const startsWithS = p0.ch === 'S';
+  const noRepeatA = (ch) => startsWithS || ch !== 'a';
+  let shortest = Infinity;
+  function getNext(state) {
+    const { pos, length } = state;
+    if (destinations.has(pos)) {
+      return [];
     }
     if (pos.ch === 'E') {
-      return length;
+      shortest = length;
+      return null;
     }
-    checkedPoints.add(pos);
+    destinations.add(pos);
     const maxElevation = getElevation(pos.ch) + 1;
-    const neighbours = getAdjacent(pos, matrix, DIRECTIONS_SQUARE)
-      .filter((p) => getElevation(p.ch) <= maxElevation)
+    return getAdjacent(pos, matrix, DIRECTIONS_SQUARE)
+      .filter((p) => getElevation(p.ch) <= maxElevation && noRepeatA(p.ch))
       .map((p) => ({ pos: p, length: length + 1 }));
-    testPaths.push(...neighbours);
   }
-  return Infinity;
+  traverse(initialState, getNext);
+  return shortest;
 }
 
 function solve1() {
-  return traverse(posList.find((p) => p.ch === 'S'));
+  return findShortest(posList.find((p) => p.ch === 'S'));
 }
 
 function solve2() {
-  return Math.min(...posList.filter((p) => getElevation(p.ch) === 0).map((traverse)));
+  return Math.min(...posList.filter((p) => getElevation(p.ch) === 0).map((findShortest)));
 }
 
 timedLog('Part 1:', solve1());
