@@ -10,17 +10,19 @@ const cubeSet = new Set(cubes.map(posKey));
 const SIDES = [0, 1, 2];
 const DIRECTIONS = [-1, 1];
 
+timedLog('Preparation');
+
 function getNeighbours(p) {
   return SIDES.flatMap((s) => DIRECTIONS.map((d) => {
     const r = p.slice(0);
     r[s] += d;
-    return posKey(r);
+    return r;
   }));
 }
 
-timedLog('Preparation');
+const getNeighbourKeys = (p) => getNeighbours(p).map(posKey);
 
-const countConnections = (pos) => getNeighbours(pos).filter((n) => cubeSet.has(n)).length;
+const countConnections = (pos) => getNeighbourKeys(pos).filter((n) => cubeSet.has(n)).length;
 
 const countAllConnections = (posList) => posList.reduce((acc, p) => acc + countConnections(p), 0);
 
@@ -64,16 +66,42 @@ function findTrapped() {
   const positionSet = new Set(positions.map(posKey));
   const combinedSet = new Set([...cubeSet, ...positionSet]);
 
-  let openPositions = positions.filter((p) => getNeighbours(p).some((n) => !combinedSet.has(n)));
+  let openPositions = positions.filter((p) => getNeighbourKeys(p).some((n) => !combinedSet.has(n)));
   let openSet;
   const notOpen = (p) => !openSet.has(posKey(p));
-  const connectedToOpen = (p) => getNeighbours(p).some((n) => openSet.has(n));
+  const connectedToOpen = (p) => getNeighbourKeys(p).some((n) => openSet.has(n));
   while (openPositions.length > 0) {
     openSet = new Set(openPositions.map(posKey));
     positions = positions.filter(notOpen);
     openPositions = positions.filter(connectedToOpen);
   }
   return positions;
+}
+
+function floodFill() {
+  const max = SIDES.map((s) => Math.max(...cubes.map((p) => p[s])) + 1);
+  const min = SIDES.map((s) => Math.min(...cubes.map((p) => p[s])) - 1);
+  const isInside = (p) => SIDES.every((s) => p[s] >= min[s] && p[s] <= max[s]);
+  const p0 = [0, 0, 0];
+  const visited = new Set();
+  const visitedList = [];
+  const heap = [];
+  let ptr = 0;
+  let current = p0;
+  while (current) {
+    const key = posKey(current);
+    if (!visited.has(key)) {
+      visited.add(key);
+      visitedList.push(current);
+      const neighbours = getNeighbours(current).filter((p) => {
+        const pKey = posKey(p);
+        return !cubeSet.has(pKey) && !visited.has(pKey) && isInside(p);
+      });
+      heap.push(...neighbours);
+    }
+    current = heap[ptr++];
+  }
+  return visitedList;
 }
 
 let fullSurface;
@@ -89,5 +117,10 @@ function solve2() {
   return fullSurface - trappedConnections;
 }
 
+function solve3() {
+  return countAllConnections(floodFill());
+}
+
 timedLog('Part 1:', solve1());
 timedLog('Part 2:', solve2());
+timedLog('Part 3:', solve3());
