@@ -1,10 +1,11 @@
 const times = [performance.now()];
 
-const digits = process.argv[2] === 'sample.txt' ? 1 : 0;
+// const digits = process.argv[2] === 'sample.txt' ? 1 : 0;
 const options = {
   roundingMode: 'ceil',
-  minimumFractionDigits: digits,
-  maximumFractionDigits: digits,
+  maximumSignificantDigits: 3,
+  // minimumFractionDigits: digits,
+  // maximumFractionDigits: digits,
 };
 
 const { format } = new Intl.NumberFormat(undefined, options);
