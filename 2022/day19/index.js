@@ -8,25 +8,19 @@ const data = readLines().map((line) => line.split(/[:.]\s+/)).map((line) => {
   const robots = {};
   robotLines.forEach((str) => {
     const type = str.split(' ')[1];
-    const robot = { value: 0 };
+    robots[type] = {};
     str.match(/\d+ \w+/g).forEach((m) => {
       const [numStr, tp] = m.split(' ');
       const num = Number(numStr);
-      robot[tp] = num;
-      if (tp === 'ore') {
-        robot.value += num;
-      } else {
-        robot.value += num * robots[tp].value;
-      }
+      robots[type][tp] = num;
     });
-    robots[type] = robot;
   });
   return { id, robots };
 });
 
 const types = Object.keys(data[0].robots);
 
-// Find maximum number of robots needed for each type
+// Find maximum number of robots needed and minimum steps to produce geode for each type
 data.forEach(({ robots }) => {
   types.forEach((type) => {
     // eslint-disable-next-line no-param-reassign
@@ -44,7 +38,7 @@ data.forEach(({ robots }) => {
   });
 });
 
-timedLog('Preparation', types);
+timedLog('Preparation');
 
 function init(blueprint) {
   const result = {
