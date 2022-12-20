@@ -26,7 +26,7 @@ const data = readLines().map((line) => line.split(/[:.]\s+/)).map((line) => {
 
 const types = Object.keys(data[0].robots);
 
-// Find maximum nuber of robots needed for each type
+// Find maximum number of robots needed for each type
 data.forEach(({ robots }) => {
   types.forEach((type) => {
     // eslint-disable-next-line no-param-reassign
@@ -61,15 +61,29 @@ function init(blueprint) {
   return result;
 }
 
-function addSupply(supply, robots, n = 1) {
+function addSupply(state, n = 1) {
+  const { t, supply, robots } = state;
   const result = { ...supply };
   types.forEach((type) => {
     result[type] += n * robots[type];
   });
-  return result;
+  return { ...state, supply: result, t: t - n };
 }
 
-// Max number of geode after t seconds
+function buyRobots(state, typeList, priced) {
+  const { blueprint, robots, supply } = state;
+  const newRobots = { ...robots };
+  const newSupply = { ...supply };
+  typeList.forEach((type) => {
+    newRobots[type]++;
+    priced.forEach((tp) => {
+      newSupply[tp] -= blueprint.robots[type][tp];
+    });
+  });
+  return { ...state, robots: newRobots, supply: newSupply };
+}
+
+// Max number of geode after t seconds, assuming buying multiple all robots simultaneously
 function getValue(state) {
   const {
     blueprint, t, robots, supply,
@@ -77,25 +91,13 @@ function getValue(state) {
   if (t === 0) {
     return supply.geode;
   }
-  const newSupply = addSupply(supply, robots);
-  const newRobots = { ...robots };
-  types.forEach((type) => {
+  const priced = types.slice(1);
+  const typeList = priced.filter((type) => {
     const { max, minSteps } = blueprint.robots[type];
-    if (robots[type] >= max || t < minSteps) {
-      return;
-    }
-    const [cost] = types.slice(1).map((tp) => blueprint.robots[type][tp]);
-    if (!cost) {
-      newRobots[type]++;
-    } else if (newSupply[type] >= cost) {
-      newRobots[type]++;
-      newSupply[type] -= cost;
-    }
+    const [, cost] = priced.map((tp) => blueprint.robots[type][tp]);
+    return robots[type] < max && t >= minSteps && supply[type] >= (cost || 0);
   });
-  const result = getValue({
-    ...state, t: t - 1, robots: newRobots, supply: newSupply,
-  });
-  return result;
+  return getValue(buyRobots(addSupply(state), typeList, priced));
 }
 
 function getKey(state) {
@@ -107,11 +109,7 @@ function buyingOptions(state) {
   const {
     blueprint, robots, supply, t,
   } = state;
-  const result = [{
-    ...state,
-    t: 0,
-    supply: addSupply(supply, robots, t),
-  }];
+  const result = [addSupply(state, t)];
   types.forEach((type) => {
     const cost = blueprint.robots[type];
     if (robots[type] >= cost.max || t < cost.minSteps) {
@@ -128,15 +126,8 @@ function buyingOptions(state) {
     if (nextTime < 1) {
       return;
     }
-    const newState = {
-      ...state,
-      t: nextTime,
-      robots: { ...robots, [type]: robots[type] + 1 },
-      supply: addSupply(supply, robots, delay),
-    };
-    priced.forEach((tp) => {
-      newState.supply[tp] -= cost[tp];
-    });
+    const newState = buyRobots(addSupply(state, delay), [type], priced);
+
     if (type === 'geode' && delay === 1) {
       result.splice(0, result.length, newState);
     } else {
