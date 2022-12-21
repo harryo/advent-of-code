@@ -13,7 +13,7 @@ function findIndex(val, list) {
   return i;
 }
 
-function traverse(initialState, getNext, sort = true) {
+function traverse(initialState, getNext, sort = false) {
   const heap = [];
   let current = initialState;
   let ptr = 0;
