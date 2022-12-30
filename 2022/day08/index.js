@@ -1,6 +1,6 @@
-const readLines = require('../../helpers/readLines');
-const timedLog = require('../../helpers/timedLog');
-const { DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
+import readLines from '../../helpers/readLines.js';
+import timedLog from '../../helpers/timedLog.js';
+import { DIRECTIONS_SQUARE } from '../../helpers/getAdjacent.js';
 
 const data = readLines().map((line) => line.split('').map(Number));
 

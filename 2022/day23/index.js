@@ -1,6 +1,6 @@
-const { DIRECTIONS_ALL } = require('../../helpers/getAdjacent');
-const { readLines } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
+import { DIRECTIONS_ALL } from '../../helpers/getAdjacent.js';
+import { readLines } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
 
 const data = readLines();
 const INITIALPOSITIONS = [];

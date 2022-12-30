@@ -6,4 +6,4 @@ function find(arr, cb) {
   }) ? result : undefined;
 }
 
-module.exports = find;
+export default find;

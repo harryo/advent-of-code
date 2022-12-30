@@ -1,7 +1,7 @@
-const readLines = require('../../helpers/readLines');
-const parseLine = require('./parseLine');
-const solve1 = require('./solve1');
-const solve2 = require('./solve2');
+import readLines from '../../helpers/readLines.js';
+import parseLine from './parseLine.js';
+import solve1 from './solve1.js';
+import solve2 from './solve2.js';
 
 const useSample = 0;
 const range = 3;

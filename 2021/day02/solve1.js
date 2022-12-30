@@ -26,4 +26,4 @@ function solve1(data) {
   return depth * horizontal;
 }
 
-module.exports = solve1;
+export default solve1;

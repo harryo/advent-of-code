@@ -1,5 +1,5 @@
-const readBlocks = require('../../helpers/readBlocks');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+import readBlocks from '../../helpers/readBlocks.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 function getState(block) {
   const [base, ...columns] = block.split(/\n/).reverse();

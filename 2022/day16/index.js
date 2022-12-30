@@ -1,7 +1,7 @@
-const { readLines } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const traverse = require('../../helpers/traverse');
-const { initDistances, getDistance } = require('./distances');
+import { readLines } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import traverse from '../../helpers/traverse.js';
+import { initDistances, getDistance } from './distances.js';
 
 const re = /^Valve (\w+) .* rate=(\d+).* valves? (.*)$/;
 

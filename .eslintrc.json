@@ -15,6 +15,7 @@
         "ecmaVersion": 2020
     },
     "rules": {
+        "import/extensions": ["always"],
         "no-console": "off",
         "no-bitwise": "off",
         "max-len": [

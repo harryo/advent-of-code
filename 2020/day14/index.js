@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-// const readFile = require('../../helpers/readFile');
-const readLines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+// import readFile from '../../helpers/readFile.js';
+import readLines from '../../helpers/readLines.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 const commands = readLines();
 

@@ -1,5 +1,5 @@
-const readLines = require('./readLines');
+import readLines from './readLines.js';
 
 const readMatrix = () => readLines().map((row, r) => Array.from(row).map((ch, c) => ({ r, c, ch })));
 
-module.exports = readMatrix;
+export default readMatrix;

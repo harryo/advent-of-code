@@ -1,6 +1,6 @@
-const { readMatrix } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const { DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
+import { readMatrix } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import { DIRECTIONS_SQUARE } from '../../helpers/getAdjacent.js';
 
 const ALLMOVES = [[0, 0], ...DIRECTIONS_SQUARE];
 const data = readMatrix();

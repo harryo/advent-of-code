@@ -40,4 +40,4 @@ class Wall {
   }
 }
 
-module.exports = Wall;
+export default Wall;

@@ -1,4 +1,4 @@
-const traverse = require('../../helpers/traverse');
+import traverse from '../../helpers/traverse.js';
 
 const cache = {};
 
@@ -34,4 +34,4 @@ function getDistance(start, end) {
   return cache[key];
 }
 
-module.exports = { getDistance, initDistances };
+export default { getDistance, initDistances };

@@ -1,5 +1,5 @@
-const readLines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+import readLines from '../../helpers/readLines.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 require('../../helpers/sortBy');
 
 let index = 0;

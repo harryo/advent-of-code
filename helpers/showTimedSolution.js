@@ -6,4 +6,4 @@ function showTimedSolution(id, callback) {
   console.log(`Part ${id} solution:`, result);
 }
 
-module.exports = showTimedSolution;
+export default showTimedSolution;

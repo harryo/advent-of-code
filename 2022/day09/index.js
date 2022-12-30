@@ -1,6 +1,6 @@
-const readLines = require('../../helpers/readLines');
-const timedLog = require('../../helpers/timedLog');
-const loop = require('../../helpers/loop');
+import readLines from '../../helpers/readLines.js';
+import timedLog from '../../helpers/timedLog.js';
+import loop from '../../helpers/loop.js';
 
 const moves = readLines().map((line) => line.split(' ')).map((a) => ({ dir: a[0], dist: Number(a[1]) }));
 const dirs = {

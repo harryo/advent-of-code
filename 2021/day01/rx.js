@@ -1,8 +1,8 @@
-const { from } = require('rxjs');
+import { from } from 'rxjs';
 const {
   map, filter, count, pairwise, scan,
 } = require('rxjs/operators');
-const readLines = require('../../helpers/readLines');
+import readLines from '../../helpers/readLines.js';
 
 const range = 3;
 

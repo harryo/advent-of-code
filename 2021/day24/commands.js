@@ -1,5 +1,5 @@
-const createArray = require('../../helpers/createArray');
-const readLines = require('../../helpers/readLines');
+import createArray from '../../helpers/createArray.js';
+import readLines from '../../helpers/readLines.js';
 
 const commands = readLines();
 
@@ -15,4 +15,4 @@ function splitInput(prog) {
 }
 const steps = splitInput(commands);
 
-module.exports = { commands, steps };
+export default { commands, steps };

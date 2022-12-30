@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 const inputText = fs.readFileSync('./day01.txt', 'utf-8');
 const inputData = inputText.split(/\D+/).filter(Boolean).map(Number);

@@ -1,6 +1,6 @@
-const { from } = require('rxjs');
-const { map, reduce } = require('rxjs/operators');
-const readLines = require('../../helpers/readLines');
+import { from } from 'rxjs';
+import { map, reduce } from 'rxjs/operators';
+import readLines from '../../helpers/readLines.js';
 
 const source = readLines();
 

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { userInfo } = require('os');
+import fs from 'fs';
+import { userInfo } from 'os';
 
 const sample = 0;
 const sampleFile = './sample.txt'

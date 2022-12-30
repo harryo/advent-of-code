@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-const { readBlocks } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const loop = require('../../helpers/loop');
-const getNumbers = require('../../helpers/getNumbers');
+import { readBlocks } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import loop from '../../helpers/loop.js';
+import getNumbers from '../../helpers/getNumbers.js';
 
 function camelize(str) {
   return str.toLowerCase().replace(/\s+(\w)/, (m) => m[1].toUpperCase());

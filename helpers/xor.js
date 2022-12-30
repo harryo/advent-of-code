@@ -8,4 +8,4 @@ function xor(a, b) {
   return Boolean(Boolean(a) ^ Boolean(b));
 }
 
-module.exports = xor;
+export default xor;

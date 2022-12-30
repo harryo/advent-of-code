@@ -38,4 +38,4 @@ function initShapes() {
   shapePtr = 0;
 }
 
-module.exports = { nextShape, initShapes };
+export default { nextShape, initShapes };

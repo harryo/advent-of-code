@@ -1,9 +1,9 @@
-// const readFile = require('../../helpers/readFile');
+// import readFile from '../../helpers/readFile.js';
 require('../../helpers/groupBy');
-const showTimedSolution = require('../../helpers/showTimedSolution');
-const { steps } = require('./commands');
-const validate = require('./validate');
-// const validate = require('./validate');
+import showTimedSolution from '../../helpers/showTimedSolution.js';
+import { steps } from './commands.js';
+import validate from './validate.js';
+// import validate from './validate.js';
 
 console.time('Preparation');
 

@@ -1,4 +1,4 @@
-const { steps } = require('./commands');
+import { steps } from './commands.js';
 
 /**
  * Analyzing the processing of each digit
@@ -25,4 +25,4 @@ function validate2(value, offset = 0, z = 0) {
     .reduce((acc, step, i) => processDigit(input[i], acc, ...step), z);
 }
 
-module.exports = { processDigit, validate2 };
+export default { processDigit, validate2 };

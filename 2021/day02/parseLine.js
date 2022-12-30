@@ -3,4 +3,4 @@ function parseLine(line) {
   return { command, value: Number(value) };
 }
 
-module.exports = parseLine;
+export default parseLine;

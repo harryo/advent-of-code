@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 const sample = 01;
 const sampleFile = './sample.txt'

@@ -1,7 +1,7 @@
-// const readFile = require('../../helpers/readFile');
-const createArray = require('../../helpers/createArray');
-const readLines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+// import readFile from '../../helpers/readFile.js';
+import createArray from '../../helpers/createArray.js';
+import readLines from '../../helpers/readLines.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 console.time('Preparation');
 const toBits = (v, n = 4) => v.toString(2).padStart(n, '0');
