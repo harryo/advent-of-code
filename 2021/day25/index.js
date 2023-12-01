@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
-// const readFile = require('../../helpers/readFile');
-// const readLines = require('../../helpers/readLines');
-const readMatrix = require('../../helpers/readMatrix');
-const createArray = require('../../helpers/createArray');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+// import readFile from '../../helpers/readFile.js';
+// import readLines from '../../helpers/readLines.js';
+import readMatrix from '../../helpers/readMatrix.js';
+import createArray from '../../helpers/createArray.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 console.time('Preparation');
 

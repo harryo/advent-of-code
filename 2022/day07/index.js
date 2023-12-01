@@ -1,5 +1,5 @@
-const readFile = require('../../helpers/readFile');
-const timedLog = require('../../helpers/timedLog');
+import readFile from '../../helpers/readFile.js';
+import timedLog from '../../helpers/timedLog.js';
 
 const commands = readFile().split('$ ').slice(1).map((cmd) => cmd.trim().split(/\n/));
 

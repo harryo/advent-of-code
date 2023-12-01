@@ -1,9 +1,9 @@
-// const readFile = require('../../helpers/readFile');
-// const readLines = require('../../helpers/readLines');
+// import readFile from '../../helpers/readFile.js';
+// import readLines from '../../helpers/readLines.js';
 require('../../helpers/forEach');
 require('../../helpers/sortBy');
-const readBlocks = require('../../helpers/readBlocks');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+import readBlocks from '../../helpers/readBlocks.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 const [template, ruleLines] = readBlocks();
 const rules = {};

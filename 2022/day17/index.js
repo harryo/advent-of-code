@@ -1,7 +1,7 @@
-const { readFile } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const loop = require('../../helpers/loop');
-const { initShapes, nextShape } = require('./shapes');
+import { readFile } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import loop from '../../helpers/loop.js';
+import { initShapes, nextShape } from './shapes.js';
 
 const INITHEIGHT = 3;
 

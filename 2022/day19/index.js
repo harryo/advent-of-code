@@ -1,6 +1,6 @@
-const { readLines } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const traverse = require('../../helpers/traverse');
+import { readLines } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import traverse from '../../helpers/traverse.js';
 
 const data = readLines().map((line) => line.split(/[:.]\s+/)).map((line) => {
   const [blueprint, ...robotLines] = line;

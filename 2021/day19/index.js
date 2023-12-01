@@ -1,13 +1,13 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable prefer-destructuring */
-// const readFile = require('../../helpers/readFile');
-// const readLines = require('../../helpers/readLines');
+// import readFile from '../../helpers/readFile.js';
+// import readLines from '../../helpers/readLines.js';
 
 require('../../helpers/sortBy');
-const createArray = require('../../helpers/createArray');
-const readBlocks = require('../../helpers/readBlocks');
-const showTimedSolution = require('../../helpers/showTimedSolution');
-const { transformLocations } = require('./orientations');
+import createArray from '../../helpers/createArray.js';
+import readBlocks from '../../helpers/readBlocks.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
+import { transformLocations } from './orientations.js';
 
 const scanners = readBlocks()
   .map((blk) => blk

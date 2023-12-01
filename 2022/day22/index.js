@@ -1,5 +1,5 @@
-const { readBlocks } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
+import { readBlocks } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
 
 const data = readBlocks();
 

@@ -1,7 +1,7 @@
-const { readMatrix } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const { getAdjacent, DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
-const traverse = require('../../helpers/traverse');
+import { readMatrix } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import { getAdjacent, DIRECTIONS_SQUARE } from '../../helpers/getAdjacent.js';
+import traverse from '../../helpers/traverse.js';
 
 const matrix = readMatrix();
 const posList = matrix.flat();

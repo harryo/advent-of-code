@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-const { getAdjacent, DIRECTIONS_SQUARE } = require('../../helpers/getAdjacent');
-const { types } = require('./constants');
+import { getAdjacent, DIRECTIONS_SQUARE } from '../../helpers/getAdjacent.js';
+import { types } from './constants.js';
 
 function readParseInput(matrix) {
   const inside = (f) => !('# '.includes(f.ch));
@@ -22,4 +22,4 @@ function readParseInput(matrix) {
   return { roomCols, fields };
 }
 
-module.exports = readParseInput;
+export default readParseInput;

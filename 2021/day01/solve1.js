@@ -14,4 +14,4 @@ function solve1(data) {
   return nextValues.filter(hasIncreased).length;
 }
 
-module.exports = solve1;
+export default solve1;

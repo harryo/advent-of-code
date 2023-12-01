@@ -18,4 +18,4 @@ function createArray(n) {
   throw new Error('Invalid type', typeof n);
 }
 
-module.exports = createArray;
+export default createArray;

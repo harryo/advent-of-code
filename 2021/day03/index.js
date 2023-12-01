@@ -1,5 +1,5 @@
-const readLines = require('../../helpers/readLines');
-const xor = require('../../helpers/xor');
+import readLines from '../../helpers/readLines.js';
+import xor from '../../helpers/xor.js';
 
 const source = readLines();
 

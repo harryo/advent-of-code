@@ -1,7 +1,7 @@
-const getNumbers = require('../../helpers/getNumbers');
-const { readLines } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const find = require('../../helpers/find');
+import getNumbers from '../../helpers/getNumbers.js';
+import { readLines } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import find from '../../helpers/find.js';
 
 const takeYourTime = false;
 

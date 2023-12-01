@@ -51,4 +51,4 @@ function traverse(initialState, getNext, sort = false) {
   }
 }
 
-module.exports = traverse;
+export default traverse;

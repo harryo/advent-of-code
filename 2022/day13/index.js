@@ -1,5 +1,5 @@
-const { readBlocks } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
+import { readBlocks } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
 
 const pairs = readBlocks().map((block) => block.split(/\n/).map((l) => JSON.parse(l)));
 const packets = pairs.flat();

@@ -1,8 +1,4 @@
-const readFile = require('./readFile');
-const readBlocks = require('./readBlocks');
-const readLines = require('./readLines');
-const readMatrix = require('./readMatrix');
-
-module.exports = {
-  readFile, readBlocks, readLines, readMatrix,
-};
+export { default as readFile } from './readFile.js';
+export { default as readBlocks } from './readBlocks.js';
+export { default as readLines } from './readLines.js';
+export { default as readMatrix } from './readMatrix.js';

@@ -1,6 +1,6 @@
-const { readLines } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const Wall = require('./Wall');
+import { readLines } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import Wall from './Wall.js';
 
 const data = readLines().map((l) => l.split(' -> ').map((p) => p.split(',').map(Number)));
 const yMax = Math.max(...data.flat().map(([, y]) => y)) + 1;

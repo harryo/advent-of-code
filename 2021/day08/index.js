@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-const readlines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+import readlines from '../../helpers/readLines.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 const sortPattern = (pat) => Array.from(pat).sort().join('');
 

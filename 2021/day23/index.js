@@ -1,8 +1,8 @@
-const createArray = require('../../helpers/createArray');
-const readLines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
-const { types, energyReq } = require('./constants');
-const readParseInput = require('./readParseInput');
+import createArray from '../../helpers/createArray.js';
+import readLines from '../../helpers/readLines.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
+import { types, energyReq } from './constants.js';
+import readParseInput from './readParseInput.js';
 
 console.time('Preparation');
 const input = readLines();

@@ -1,6 +1,6 @@
-const { readLines } = require('../../helpers/readInput');
-const timedLog = require('../../helpers/timedLog');
-const loop = require('../../helpers/loop');
+import { readLines } from '../../helpers/readInput/index.js';
+import timedLog from '../../helpers/timedLog.js';
+import loop from '../../helpers/loop.js';
 
 const data = readLines().map(Number);
 const size = data.length - 1; // Size of row without the moving element

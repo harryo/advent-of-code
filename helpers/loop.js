@@ -4,4 +4,4 @@ function loop(count, cb) {
   }
 }
 
-module.exports = loop;
+export default loop;

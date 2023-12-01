@@ -1,9 +1,9 @@
-const fs = require('fs');
-const fileFromArgs = require('./fileFromArgs');
+import fs from 'fs';
+import fileFromArgs from './fileFromArgs.js';
 
 function readFile() {
   const filename = fileFromArgs();
   return fs.readFileSync(filename, 'utf-8');
 }
 
-module.exports = readFile;
+export default readFile;

@@ -1,4 +1,4 @@
-const { commands } = require('./commands');
+import { commands } from './commands.js';
 
 const initialState = {
   w: 0, x: 0, y: 0, z: 0,
@@ -38,4 +38,4 @@ function validate(value, offset = 0, z = 0) {
   return result.z;
 }
 
-module.exports = validate;
+export default validate;

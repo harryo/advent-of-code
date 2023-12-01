@@ -1,6 +1,6 @@
-const readFile = require('../../helpers/readFile');
-const showTimedSolution = require('../../helpers/showTimedSolution');
-const Board = require('./Board');
+import readFile from '../../helpers/readFile.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
+import Board from './Board.js';
 
 const source = readFile().split(/\n{2,}/).filter(Boolean);
 const numbers = source[0].split(/\D+/).filter(Boolean).map(Number);

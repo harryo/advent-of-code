@@ -1,9 +1,9 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-param-reassign */
-// const readFile = require('../../helpers/readFile');
-// const readLines = require('../../helpers/readLines');
-const readBlocks = require('../../helpers/readBlocks');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+// import readFile from '../../helpers/readFile.js';
+// import readLines from '../../helpers/readLines.js';
+import readBlocks from '../../helpers/readBlocks.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 const blocks = readBlocks();
 const fields = blocks[0].split(/\n/)

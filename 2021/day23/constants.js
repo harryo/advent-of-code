@@ -4,4 +4,4 @@ const energyReq = {
 
 const types = 'ABCD';
 
-module.exports = { energyReq, types };
+export default { energyReq, types };

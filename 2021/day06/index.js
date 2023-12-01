@@ -1,5 +1,5 @@
-const readFile = require('../../helpers/readFile');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+import readFile from '../../helpers/readFile.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 const CYCLE = 7;
 const source = readFile().split(/\D+/).filter(Boolean).map(Number);

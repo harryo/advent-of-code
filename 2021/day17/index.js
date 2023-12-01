@@ -1,7 +1,7 @@
-// const createArray = require('../../helpers/createArray');
-const readFile = require('../../helpers/readFile');
-// const readLines = require('../../helpers/readLines');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+// import createArray from '../../helpers/createArray.js';
+import readFile from '../../helpers/readFile.js';
+// import readLines from '../../helpers/readLines.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 const match = readFile().match(/target area: x=(.+)\.\.(.+), y=(.+)\.\.(.+)/);
 

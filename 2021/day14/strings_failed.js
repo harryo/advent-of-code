@@ -1,10 +1,10 @@
 /**
  * Solved by writing out strings and counting, fails on more than 20-25 steps
  */
-// const readFile = require('../../helpers/readFile');
-// const readLines = require('../../helpers/readLines');
-const readBlocks = require('../../helpers/readBlocks');
-const showTimedSolution = require('../../helpers/showTimedSolution');
+// import readFile from '../../helpers/readFile.js';
+// import readLines from '../../helpers/readLines.js';
+import readBlocks from '../../helpers/readBlocks.js';
+import showTimedSolution from '../../helpers/showTimedSolution.js';
 
 /**
  * In replacements, always return the result minus the first character,

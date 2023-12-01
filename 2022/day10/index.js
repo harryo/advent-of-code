@@ -1,5 +1,5 @@
-const readLines = require('../../helpers/readLines');
-const timedLog = require('../../helpers/timedLog');
+import readLines from '../../helpers/readLines.js';
+import timedLog from '../../helpers/timedLog.js';
 
 const program = readLines();
 

@@ -1,4 +1,4 @@
-const createArray = require('../../helpers/createArray');
+import createArray from '../../helpers/createArray.js';
 
 const transformations = [
   ([x, y, z]) => [[x, y, z], [y, z, x], [z, x, y]], // Different axis up
@@ -19,7 +19,7 @@ function transformLocations(locations) {
   return createArray(24).map((i) => options.map((or) => or[i]));
 }
 
-module.exports = {
+export default {
   // orientations,
   transformLocations,
 };

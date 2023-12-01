@@ -11,4 +11,4 @@ function fileFromArgs() {
   return pathname;
 }
 
-module.exports = fileFromArgs;
+export default fileFromArgs;

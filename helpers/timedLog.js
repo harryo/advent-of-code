@@ -20,4 +20,4 @@ function timedLog(...args) {
   console.log(formatTime(t - times[0]), formatTime(t - times[times.length - 2]), ...args);
 }
 
-module.exports = timedLog;
+export default timedLog;
