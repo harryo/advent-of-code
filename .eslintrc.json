@@ -1,11 +1,10 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
         "es6": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -15,7 +14,7 @@
         "ecmaVersion": 2020
     },
     "rules": {
-        "import/extensions": ["always"],
+        "import/extensions": ["error", "always"],
         "no-console": "off",
         "no-bitwise": "off",
         "max-len": [
@@ -38,6 +37,7 @@
             }
         ],
         "no-multi-str": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "react/jsx-filename-extension": 0
     }
 }
