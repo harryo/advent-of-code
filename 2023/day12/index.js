@@ -25,36 +25,41 @@ function parseLine2(line) {
   };
 }
 
-function test(tpl, groups, seps, idx) {
-  const str = seps.slice(0, idx).map((s, i) => '.'.repeat(s) + '#'.repeat(groups[i] ?? 0)).join('');
-  return str.split('').every((c, i) => tpl[i] === '?' || tpl[i] === c);
-}
+let cache;
 
-function findOptions(tpl, groups, seps, idx, remaining) {
-  if (!test(tpl, groups, seps, idx)) {
+function findOptions(tpl, groups) {
+  const cacheKey = `${tpl}#${groups.join(',')}`;
+  if (cache[cacheKey]) {
+    return cache[cacheKey];
+  }
+  if (groups.length === 0) {
+    return tpl.includes('#') ? 0 : 1;
+  }
+  const minLength = groups.reduce((a, b) => a + b, groups.length - 1);
+  if (tpl.length < minLength) {
+    return 0;
+  }
+  // Find first option
+  const match = new RegExp(`^([\\?\\.]*?)([\\?\\#]{${groups[0]}})`).exec(tpl);
+  if (!match) {
     return 0;
   }
   let nrOptions = 0;
-  const idxSep = seps[idx];
-  if (idx === seps.length - 1) {
-    seps[idx] += remaining; // eslint-disable-line no-param-reassign
-    nrOptions = test(tpl, groups, seps, idx + 1) ? 1 : 0;
-  } else {
-    for (let i = 0; i <= remaining; i++) {
-      seps[idx] = idxSep + i; // eslint-disable-line no-param-reassign
-      nrOptions += findOptions(tpl, groups, seps, idx + 1, remaining - i);
-    }
+  if (tpl.length === match[0].length) {
+    nrOptions += groups.length === 1 ? 1 : 0;
+  } else if (tpl[match[0].length] !== '#') {
+    nrOptions += findOptions(tpl.slice(match[0].length + 1), groups.slice(1));
   }
-  seps[idx] = idxSep; // eslint-disable-line no-param-reassign
+  if (match[2].startsWith('?')) {
+    nrOptions += findOptions(tpl.slice(match[1].length + 1), groups);
+  }
+  cache[cacheKey] = nrOptions;
   return nrOptions;
 }
 
 function countOptions({ tpl, groups }) {
-  const seps = new Array(groups.length + 1).fill(1);
-  seps[0] = 0;
-  seps[seps.length - 1] = 0;
-  const remaining = tpl.length - [...seps, ...groups].reduce((a, b) => a + b, 0);
-  const validOptions = findOptions(tpl, groups, seps, 0, remaining);
+  cache = {};
+  const validOptions = findOptions(tpl, groups);
   count++;
   console.log('Count', count, validOptions);
   return validOptions;
