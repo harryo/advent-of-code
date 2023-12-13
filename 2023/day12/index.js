@@ -4,27 +4,6 @@ import timedLog from '../../helpers/timedLog.js';
 const data = readLines();
 
 let count = 0;
-function isValid(str, groups) {
-  const g = Array.from(str.matchAll(/#+/g));
-  return g.length === groups.length && g.every((m, i) => m[0].length === groups[i]);
-}
-
-function makeRegex(groups) {
-  return new RegExp(`^[\\?\\.]*${groups.map((g) => `[\\?\\#]{${g}}`).join('[\\?\\.]+')}[\\?\\.]*$`);
-}
-
-function mayBeValid(str, groups) {
-  const g = Array.from(str.matchAll(/#+/g));
-  if (g.length > groups.length) {
-    return false;
-  }
-  if (g.every((m, i) => m[0].length === groups[i])) {
-    return true;
-  }
-  const canExtend = str.endsWith('#');
-  const lastIndex = g.length - 1;
-  return canExtend && g[lastIndex][0].length <= groups[lastIndex];
-}
 
 function parseLine(line) {
   const [tpl, arc] = line.split(' ');
@@ -46,38 +25,48 @@ function parseLine2(line) {
   };
 }
 
-function findOptions(tpl, re) {
-  const pos = tpl.indexOf('?');
-  if (pos === -1) {
-    return [tpl];
+function findOptions(tpl, groups) {
+  if (groups.length === 0) {
+    return tpl.includes('#') ? 0 : 1;
   }
-  if (!re.test(tpl)) {
-    return [];
+  const minLength = groups.reduce((a, b) => a + b, groups.length - 1);
+  if (tpl.length < minLength) {
+    return 0;
   }
-  const s1 = tpl.slice(0, pos);
-  const s2 = tpl.slice(pos + 1);
-  return ['.', '#'].flatMap((c) => findOptions(`${s1}${c}${s2}`, re));
+  // Find first option
+  const match = new RegExp(`^([\\?\\.]*?)([\\?\\#]{${groups[0]}})`).exec(tpl);
+  if (!match) {
+    return 0;
+  }
+  let nrOptions = 0;
+  if (tpl.length === match[0].length) {
+    nrOptions += groups.length === 1 ? 1 : 0;
+  } else if (tpl[match[0].length] !== '#') {
+    nrOptions += findOptions(tpl.slice(match[0].length + 1), groups.slice(1));
+  }
+  if (match[2].startsWith('?')) {
+    nrOptions += findOptions(tpl.slice(match[1].length + 1), groups);
+  }
+  return nrOptions;
 }
 
 function countOptions({ tpl, groups }) {
-  const re = makeRegex(groups);
-  const options = findOptions(tpl, re);
-  const validOptions = options.filter((o) => isValid(o, groups));
+  const validOptions = findOptions(tpl, groups);
   count++;
-  console.log('Count', count, validOptions.length);
-  return validOptions.length;
+  console.log('Count', count, validOptions);
+  return validOptions;
 }
 
 timedLog('Preparation');
 
 function solve1() {
   count = 0;
-  // return data.map(parseLine).map(countOptions).reduce((a, b) => a + b, 0);
+  return data.map(parseLine).map(countOptions).reduce((a, b) => a + b, 0);
 }
 
 function solve2() {
   count = 0;
-  return data.map(parseLine2).slice(4, 5).map(countOptions).reduce((a, b) => a + b, 0);
+  return data.map(parseLine2).map(countOptions).reduce((a, b) => a + b, 0);
 }
 
 timedLog('Part 1:', solve1());
