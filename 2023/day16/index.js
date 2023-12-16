@@ -58,17 +58,15 @@ function mapToStrings(history = {}) {
   }).join('').replace(/\\/g, '\u29F5'));
 }
 
-function solve1() {
+function withStart(initialBeam) {
   const history = {};
-  let beams = [{ loc: data[0][0], dir: RIGHT }];
+  let beams = [initialBeam];
   history[beams[0].loc.i] = [RIGHT];
 
   function newLocation(oldLoc, dir) {
     const loc = beamStep(oldLoc, dir);
-    console.log([oldLoc.r, oldLoc.c].toString(), dir[2], loc && [loc.r, loc.c].toString());
     return { loc, dir };
   }
-  mapToStrings(history);
   while (beams.length > 0) {
     beams = beams.flatMap(({ loc, dir }) => {
       const newDirs = divert(loc, dir);
@@ -87,15 +85,21 @@ function solve1() {
       history[loc.i].push(dir);
       return true;
     });
-    mapToStrings(history);
   }
-  mapStrings.forEach((row) => console.log(row));
-  data.forEach((row) => console.log(row.map((cell) => (history[cell.i] ? '#' : '.')).join('')));
   return Object.values(history).length;
 }
 
+function solve1() {
+  return withStart({ loc: data[0][0], dir: RIGHT });
+}
+
 function solve2() {
-  return 'Pending';
+  const startBeams = [
+    data.flatMap((row) => [{ loc: row[0], dir: RIGHT }, { loc: row[row.length - 1], dir: LEFT }]),
+    data[0].map((cell) => ({ loc: cell, dir: DOWN })),
+    data[data.length - 1].map((cell) => ({ loc: cell, dir: UP })),
+  ].flat();
+  return Math.max(...startBeams.map(withStart));
 }
 
 timedLog('Part 1:', solve1());
