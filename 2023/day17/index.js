@@ -23,7 +23,7 @@ function init(part) {
   const history = [];
   const heatLoss = 0;
   const minHeatLoss = Infinity;
-  const placesVisited = new Array(list.length).fill(null);
+  const placesVisited = {};
   const heap = new Heap((o) => o?.heatLoss ?? Infinity);
   heap.insert({ pos, history, heatLoss });
   return {
@@ -31,28 +31,32 @@ function init(part) {
   };
 }
 
+function shouldContinue(item, state) {
+  const { placesVisited, minHeatLoss } = state;
+  const {
+    pos, heatLoss, lastDir, dirCount,
+  } = item;
+  const key = [pos.str, lastDir, dirCount].join('|');
+  return heatLoss < Math.min(minHeatLoss - pos.distance, placesVisited[key] ?? Infinity) ? key : null;
+}
+
 function step(state) {
   const {
-    placesVisited, heap, minHeatLoss, part,
+    placesVisited, heap, part,
   } = state;
+  const item = heap.next();
   const {
     pos, history, heatLoss, lastDir, dirCount,
-  } = heap.next();
-  const key = [lastDir, dirCount].join('|');
-  if (heatLoss + pos.distance >= minHeatLoss) {
+  } = item;
+  const key = shouldContinue(item, state);
+  if (!key) {
     return state;
   }
-  if (placesVisited[pos.i]?.[key] && placesVisited[pos.i][key] <= heatLoss) {
-    return state;
-  }
-  placesVisited[pos.i] = Object.assign(placesVisited[pos.i] || {}, { [key]: heatLoss });
+  placesVisited[key] = heatLoss;
   const newHistory = [...history, {
     pos: pos.str, heatLoss, lastDir, dirCount,
   }];
   if (pos === endPos) {
-    if (heatLoss >= minHeatLoss) {
-      return state;
-    }
     return { ...state, minHeatLoss: heatLoss, bestpath: newHistory };
   }
   const adjacent = DIRECTIONS_SQUARE.map(([dr, dc], di) => {
@@ -61,9 +65,6 @@ function step(state) {
       return null;
     }
     if (p.str === history[history.length - 1]?.pos) {
-      return null;
-    }
-    if (heatLoss + p.value + p.distance >= minHeatLoss) {
       return null;
     }
     const dir = dirs[di];
@@ -78,17 +79,14 @@ function step(state) {
     if (part === 2 && dir !== lastDir && dirCount < 4) {
       return null;
     }
-    const newKey = [dir, newDirCount].join('|');
-    if (placesVisited[p.i]?.[newKey] && placesVisited[p.i][newKey] < heatLoss) {
-      return null;
-    }
-    return {
+    const newItem = {
       pos: p,
       history: newHistory,
       heatLoss: heatLoss + p.value,
       lastDir: dir,
       dirCount: newDirCount,
     };
+    return shouldContinue(newItem, state) ? newItem : null;
   }).filter(Boolean);
   heap.insert(...adjacent);
   return state;
