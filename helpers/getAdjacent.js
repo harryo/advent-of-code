@@ -7,7 +7,7 @@ export function getAdjacent(loc, matrix, directions) {
   const { r, c } = loc;
   return directions
     .map((d) => ({ r: r + d[0], c: c + d[1] })) // possible positions
-    .map((p) => matrix[p.r] && matrix[p.r][p.c]) // to map locations
+    .map((p) => matrix[p.r]?.[p.c]) // to map locations
     .filter(Boolean); // only inside map
 }
 
