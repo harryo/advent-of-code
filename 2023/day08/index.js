@@ -1,6 +1,7 @@
 /* eslint-disable no-continue */
 import { readLines } from '../../helpers/readInput/index.js';
 import timedLog from '../../helpers/timedLog.js';
+import findLeastCommonMultiple from '../../helpers/leastCommonMultiple.js';
 
 const data = readLines();
 const [directions, ...rest] = data;
@@ -46,17 +47,6 @@ function findLoop(startNode) {
     }
   } while (!prev);
   return endPoints.map((pt) => [pt.i, i - prev.i]);
-}
-
-function findLeastCommonMultiple(num1, num2) {
-  const maxNum = Math.max(num1, num2);
-  const minNum = Math.min(num1, num2);
-
-  for (let i = maxNum; ; i += maxNum) {
-    if (i % minNum === 0) {
-      return i;
-    }
-  }
 }
 
 function shared(a, b) {

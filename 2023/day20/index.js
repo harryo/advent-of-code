@@ -2,6 +2,7 @@ import { readLines } from '../../helpers/readInput/index.js';
 import timedLog from '../../helpers/timedLog.js';
 import Conjunction from './Conjunction.js';
 import FlipFlop from './FlipFlop.js';
+import leastCommonMultiple from '../../helpers/leastCommonMultiple.js';
 
 const data = readLines();
 
@@ -78,7 +79,7 @@ function solve2() {
   while (!checks.every((check) => check in counts)) {
     button(state, false, counts, ++i);
   }
-  return checks.map((check) => counts[check]).reduce((a, b) => a * b, 1);
+  return leastCommonMultiple(...checks.map((check) => counts[check]));
 }
 
 timedLog('Part 1:', solve1());
