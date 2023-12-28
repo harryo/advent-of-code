@@ -10,6 +10,7 @@ const hailstones = readLines().map((line) => {
   });
   return { p, d };
 });
+const [min, max] = hailstones.length < 10 ? [7, 27] : [200000000000000, 400000000000000];
 
 function findIntersection(h1, h2) {
   const { x: x1, y: y1 } = h1.p;
@@ -26,7 +27,6 @@ function findIntersection(h1, h2) {
     x, y, t1, t2,
   };
 }
-const [min, max] = hailstones.length < 10 ? [7, 27] : [200000000000000, 400000000000000];
 
 function isValid({
   x, y, t1, t2,
@@ -53,30 +53,76 @@ function findMultiples() {
   const multiples = {};
   DIMS.forEach((dim) => {
     const pos = new Map();
+    const diffs = new Map();
+    multiples[dim] = new Map();
     hailstones.forEach((h) => {
       const p = h.p[dim];
       const d = h.d[dim];
-      if (!pos.has(d)) {
-        pos.set(d, p);
-      } else if (pos.get(d) !== p) {
-        if (!multiples[dim]) {
-          multiples[dim] = [];
-        }
-        multiples[dim].push(Math.abs(p - pos.get(d)));
+      if (pos.has(d)) {
+        diffs.set(d, [...(diffs.get(d) || []), Math.abs(p - pos.get(d))]);
       }
+      pos.set(d, [p]);
+    });
+    multiples[dim] = [];
+    diffs.forEach((p, d) => {
+      multiples[dim].push({ d, p: gcd(...p) });
     });
   });
   return multiples;
 }
 
+function findDenominators(p) {
+  const dMax = Math.sqrt(p);
+  const result = new Set();
+  for (let i = 1; i <= dMax; i++) {
+    if (p % i === 0) {
+      result.add(i);
+      result.add(p / i);
+      result.add(-i);
+      result.add(-p / i);
+    }
+  }
+  return Array.from(result).sort((a, b) => a - b);
+}
+
+function findOptions(d, p, options) {
+  if (!options) {
+    return findDenominators(p).map((n) => n + d);
+  }
+  return options.filter((n) => p % (n - d) === 0);
+}
+
 function solve2() {
   const multiples = findMultiples();
-  DIMS.forEach((dim) => {
-    if (multiples[dim]) {
-      console.log(dim, gcd(...multiples[dim]));
-    }
+  const options = DIMS.map((dim) => multiples[dim].reduce((acc, { d, p }) => findOptions(d, p, acc), null));
+  const allOptions = [];
+  options[0].forEach((x) => {
+    options[1].forEach((y) => {
+      options[2].forEach((z) => {
+        allOptions.push({ x, y, z });
+      });
+    });
   });
-  return 'Pending';
+  const solutions = allOptions.map((o) => {
+    const points = hailstones.slice(0, 2).map(({ p, d }) => ({ p, d: { x: d.x - o.x, y: d.y - o.y, z: d.z - o.z } }));
+    const {
+      x, y, t1, t2,
+    } = findIntersection(...points);
+    if (t1 < 0 || t2 < 0) {
+      return null;
+    }
+    const z1 = points[0].p.z + points[0].d.z * t1;
+    const z2 = points[1].p.z + points[1].d.z * t2;
+    const err = Math.abs(z1 - z2);
+    if (err > 0.1) {
+      return null;
+    }
+    return {
+      p: { x, y, z: Math.round(z1) },
+      d: o,
+    };
+  }).filter(Boolean);
+  return DIMS.reduce((acc, dim) => acc + solutions[0].p[dim], 0);
 }
 
 timedLog('Part 1:', solve1());
