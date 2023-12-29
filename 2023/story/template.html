@@ -8,13 +8,40 @@
 <link rel="stylesheet" type="text/css" href="/static/style.css?31"/>
 <link rel="stylesheet alternate" type="text/css" href="/static/highcontrast.css?1" title="High Contrast"/>
 <link rel="shortcut icon" href="/favicon.png"/>
+<style>
+  @media only screen and (min-width: 960px) {
+    main {
+      display: flex;
+      width: 100%;
+      justify-content: stretch;
+      flex-direction: row;
+    }
+    #story {
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      margin-left: 2rem;
+      padding-right: 1rem;
+    }
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a.calendar-verycomplete').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var day = this.href.split('/').pop();
+        var storyDay = document.getElementById('day-' + day);
+        if (storyDay) {
+          storyDay.scrollIntoView();
+        }
+        return false;
+      }); 
+    });
+  });
+</script>
 </head>
 <body>
 <header><div><h1 class="title-global"><a href="/">Advent of Code</a></h1><nav><ul><li><a href="/2023/about">[About]</a></li><li><a href="/2023/events">[Events]</a></li><li><a href="https://teespring.com/stores/advent-of-code" target="_blank">[Shop]</a></li><li><a href="/2023/settings">[Settings]</a></li><li><a href="/2023/auth/logout">[Log Out]</a></li></ul></nav><div class="user">Harry Oosterveen <a href="/2023/support" class="supporter-badge" title="Advent of Code Supporter">(AoC++)</a> <span class="star-count">50*</span></div></div><div><h1 class="title-event">&nbsp;&nbsp;&nbsp;<span class="title-event-wrap">int y=</span><a href="/2023">2023</a><span class="title-event-wrap">;</span></h1><nav><ul><li><a href="/2023">[Calendar]</a></li><li><a href="/2023/support">[AoC++]</a></li><li><a href="/2023/sponsors">[Sponsors]</a></li><li><a href="/2023/leaderboard">[Leaderboard]</a></li><li><a href="/2023/stats">[Stats]</a></li></ul></nav></div></header>
-
-<div id="sidebar">
-<div id="sponsor"><div class="quiet">Our <a href="/2023/sponsors">sponsors</a> help make Advent of Code possible:</div><div class="sponsor"><a href="https://pantherainvestment.com/" target="_blank" onclick="if(ga)ga('send','event','sponsor','sidebar',this.href);" rel="noopener">Panthera Investment</a> - We solve Financial Markets. Do you want to join?</div></div>
-</div><!--/sidebar-->
 
 <main>
 <style>
@@ -151,9 +178,7 @@
 <a aria-label="Day 1, two stars" href="/2023/day/1" class="calendar-day1 calendar-verycomplete">  <span class="calendar-color-y">*</span> <span class="calendar-color-n">!</span> <span class="calendar-color-n">/^\</span>                                          <span class="calendar-day"> 1</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
 </pre>
 
-<div id="the-story">
-  <h1>The Story</h1>
-</div>
+<!--STORY-->
 
 </main>
 </body>
