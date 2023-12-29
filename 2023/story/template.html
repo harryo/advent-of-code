@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8"/>
+<title>Advent of Code 2023</title>
+<base href="https://adventofcode.com/" />
+<link rel="stylesheet" type="text/css" href="/static/style.css?31"/>
+<link rel="stylesheet alternate" type="text/css" href="/static/highcontrast.css?1" title="High Contrast"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+</head>
+<body>
+<header><div><h1 class="title-global"><a href="/">Advent of Code</a></h1><nav><ul><li><a href="/2023/about">[About]</a></li><li><a href="/2023/events">[Events]</a></li><li><a href="https://teespring.com/stores/advent-of-code" target="_blank">[Shop]</a></li><li><a href="/2023/settings">[Settings]</a></li><li><a href="/2023/auth/logout">[Log Out]</a></li></ul></nav><div class="user">Harry Oosterveen <a href="/2023/support" class="supporter-badge" title="Advent of Code Supporter">(AoC++)</a> <span class="star-count">50*</span></div></div><div><h1 class="title-event">&nbsp;&nbsp;&nbsp;<span class="title-event-wrap">int y=</span><a href="/2023">2023</a><span class="title-event-wrap">;</span></h1><nav><ul><li><a href="/2023">[Calendar]</a></li><li><a href="/2023/support">[AoC++]</a></li><li><a href="/2023/sponsors">[Sponsors]</a></li><li><a href="/2023/leaderboard">[Leaderboard]</a></li><li><a href="/2023/stats">[Stats]</a></li></ul></nav></div></header>
+
+<div id="sidebar">
+<div id="sponsor"><div class="quiet">Our <a href="/2023/sponsors">sponsors</a> help make Advent of Code possible:</div><div class="sponsor"><a href="https://pantherainvestment.com/" target="_blank" onclick="if(ga)ga('send','event','sponsor','sidebar',this.href);" rel="noopener">Panthera Investment</a> - We solve Financial Markets. Do you want to join?</div></div>
+</div><!--/sidebar-->
+
+<main>
+<style>
+.calendar .calendar-color-y { color:#ffff66; text-shadow:0 0 5px #ffff66, 0 0 10px #ffff66; }
+.calendar .calendar-color-m { color:#d4dde4; }
+.calendar .calendar-color-i { color:#a25151; }
+.calendar .calendar-color-s { color:#e3b585; }
+.calendar .sandfall {
+  position: relative;
+}
+.calendar .sandfall > span {
+  position: absolute;
+  animation: anim-calendar-sandfall 3s linear infinite;
+  display: inline-block;
+  color: #e3b585;
+  pointer-events: none;
+}
+@keyframes anim-calendar-sandfall {
+    0% { transform: translateY(0);     opacity:0.0; }
+   10% {                               opacity:0.8; }
+   90% {                               opacity:0.8; }
+  100% { transform: translateY(7.5ch); opacity:0.0; }
+}
+
+.calendar .calendar-color-a { color:#a5a8af; }
+.calendar .calendar-color-b { color:#5555bb; }
+.calendar .islefall {
+  position: relative;
+}
+.calendar .islefall > span {
+  position: absolute;
+  animation: anim-calendar-islefall 3s linear infinite;
+  display: inline-block;
+  color: #ccccff;
+  text-shadow: 0 0 3px #ccccff, 0 0 5px #ccccff, 0 0 10px #ffffff, 0 0 15px #ffffff;
+  pointer-events: none;
+}
+@keyframes anim-calendar-islefall {
+    0% { transform: translateY(0);   opacity:0.0; }
+   10% {                             opacity:0.8; }
+  100% { transform: translateY(6ch); opacity:0.0; }
+}
+
+.calendar .calendar-color-g { color:#00cc00; }
+.calendar .snowfall {
+  position: relative;
+}
+.calendar .snowfall > span {
+  position: absolute;
+  animation: anim-calendar-snowfall 10s linear infinite;
+  display: inline-block;
+  color: #ffffff;
+  pointer-events: none;
+}
+@keyframes anim-calendar-snowfall {
+    0% { transform: translate(0,0)      rotate(0);       opacity:0.0; }
+   10% {                                                 opacity:0.8; }
+  100% { transform: translate(1ch, 6ch) rotate(0.5turn); opacity:0.0; }
+}
+
+.calendar .calendar-color-n { color:#9b715b; }
+.calendar .gearfall {
+  position: relative;
+}
+.calendar .gearfall > span {
+  position: absolute;
+  animation: anim-calendar-gearfall-b 3s linear infinite;
+  display: inline-block;
+  color: #d4dde4;
+  pointer-events: none;
+}
+.calendar .gearfall > span.gearfall-whozit, .calendar .gearfall > span.gearfall-whatzit, .calendar .gearfall > span.gearfall-thingamabob {
+  animation-name: anim-calendar-gearfall-t;
+}
+@keyframes anim-calendar-gearfall-b {
+    0% { transform: translateY(0)   rotate(0)     translateY(-.5ch); opacity:0.0; }
+   20% {                                                             opacity:1.0; }
+   80% {                                                             opacity:1.0; }
+  100% { transform: translateY(4ch) rotate(2turn) translateY(-.5ch); opacity:0.0; }
+}
+@keyframes anim-calendar-gearfall-t {
+    0% { transform: translateY(0)   rotate(0)     translateY(.5ch); opacity:0.0; }
+   10% {                                                            opacity:1.0; }
+   90% {                                                            opacity:1.0; }
+  100% { transform: translateY(4ch) rotate(2turn) translateY(.5ch); opacity:0.0; }
+}
+
+.calendar .calendar-color-v { color:#df2308; text-shadow:0 0 5px #df2308, 0 0 10px #df2308; }
+.calendar .calendar-color-l { color:#ccccff; }
+.calendar .calendar-color-w { color:#ffffff; }
+.calendar .lavafall {
+  position: relative;
+}
+.calendar .lavafall > span {
+  position: absolute;
+  animation: anim-calendar-lavafall 3s linear infinite;
+  display: inline-block;
+  pointer-events: none;
+}
+@keyframes anim-calendar-lavafall {
+    0% { transform: translateY(0);   opacity:0.0; color:#faa718; text-shadow: 0 0 3px #faa718, 0 0 5px #faa718, 0 0 10px #faa718, 0 0 15px #faa718, 0 0 20px #faa718; }
+   20% {                             opacity:0.8; }
+   80% {                             opacity:0.8; }
+  100% { transform: translateY(3ch); opacity:0.0; color:#df2308; text-shadow: 0 0 3px #df2308, 0 0 5px #df2308, 0 0 10px #df2308, 0 0 15px #df2308, 0 0 20px #df2308; }
+}
+
+.calendar .calendar-color-k { color:#6b4d3b; }
+</style>
+<pre class="calendar calendar-perfect"><a aria-label="Day 14, two stars" href="/2023/day/14" class="calendar-day14 calendar-verycomplete">                     <span class="calendar-color-i">...'''''''''...</span>                    
+                  <span class="calendar-color-i">.''</span> <span class="calendar-color-v">~</span><span class="calendar-color-a">/\</span><span class="calendar-color-y">*</span> <span class="calendar-color-v">~~~~</span>  <span class="calendar-color-a">/\</span> <span class="calendar-color-i">''.</span>            <span class="calendar-day">14</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 15, two stars" href="/2023/day/15" class="calendar-day15 calendar-verycomplete">                <span class="calendar-color-i">.'</span> <span class="calendar-color-a">/\/\</span> <span class="calendar-color-v">~~~~~~~~</span> <span class="calendar-color-y">*</span> <span class="calendar-color-a">/</span><span class="calendar-color-v">~</span><span class="calendar-color-a">\</span> <span class="calendar-color-i">'.</span>          <span class="calendar-day">15</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 16, two stars" href="/2023/day/16" class="calendar-day16 calendar-verycomplete">           <span class="calendar-color-m">...</span>  <span class="calendar-color-i">:</span><span class="calendar-color-v">~~~~~~~~~</span> <span class="calendar-color-a">/\</span> <span class="calendar-color-v">~~~~</span><span class="calendar-color-a">/</span> <span class="calendar-color-y">*</span> <span class="calendar-color-a">\</span> <span class="calendar-color-i">:</span>          <span class="calendar-day">16</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 13, two stars" href="/2023/day/13" class="calendar-day13 calendar-verycomplete">    <span class="calendar-color-m">.''....'</span> <span class="calendar-color-m">'..</span><span class="calendar-color-i">'.<span class="lavafall" style=""><span style="left:-2.8px;top:-2.8px;animation-delay:-0.71s">|</span><span style="left:3.9px;top:3.9px;animation-delay:-0.03s">|</span><span style="left:10.5px;top:10.5px;animation-delay:-2.72s">|</span><span style="left:-1.7px;top:-1.7px;animation-delay:-0.31s">|</span><span style="left:-5.5px;top:-5.5px;animation-delay:-1.40s">|</span><span style="left:5.8px;top:5.8px;animation-delay:-2.97s">|</span><span style="left:-4.1px;top:-4.1px;animation-delay:-1.22s">|</span><span style="left:-9.1px;top:-9.1px;animation-delay:-1.93s">|</span><span style="left:-3.7px;top:-3.7px;animation-delay:-0.34s">|</span><span style="left:-3.2px;top:-3.2px;animation-delay:-1.54s">|</span><span style="left:4.7px;top:4.7px;animation-delay:-2.70s">|</span><span style="left:1.7px;top:1.7px;animation-delay:-1.63s">|</span><span style="left:5.4px;top:5.4px;animation-delay:-1.81s">|</span><span style="left:-7.0px;top:-7.0px;animation-delay:-2.17s">|</span><span style="left:7.5px;top:7.5px;animation-delay:-1.43s">|</span><span style="left:-8.5px;top:-8.5px;animation-delay:-0.73s">|</span><span style="left:-4.4px;top:-4.4px;animation-delay:-0.90s">|</span><span style="left:-6.9px;top:-6.9px;animation-delay:-1.20s">|</span><span style="left:-5.5px;top:-5.5px;animation-delay:-2.86s">|</span><span style="left:-4.9px;top:-4.9px;animation-delay:-1.82s">|</span></span></span><span class="calendar-color-v">~~~~</span><span class="calendar-color-a">/\</span><span class="calendar-color-y">*</span><span class="calendar-color-a">/\</span> <span class="calendar-color-v">~</span>  <span class="calendar-color-a">/\</span>   <span class="calendar-color-a">/\</span> <span class="calendar-color-i">.'</span>          <span class="calendar-day">13</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 17, two stars" href="/2023/day/17" class="calendar-day17 calendar-verycomplete">    <span class="calendar-color-m">'.ZZ</span><span class="calendar-color-v">~</span>   <span class="calendar-color-v">~</span> <span class="calendar-color-y">*</span> <span class="calendar-color-v">~~~~</span><span class="calendar-color-i">.</span>   <span class="calendar-color-a">/\</span>  <span class="calendar-color-a">/\</span>   <span class="calendar-color-a">/\</span> <span class="calendar-color-i">..'</span>            <span class="calendar-day">17</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 12, two stars" href="/2023/day/12" class="calendar-day12 calendar-verycomplete"><span class="calendar-color-m">.''''</span> <span class="calendar-color-m">ZZ</span><span class="calendar-color-y">*</span> <span class="calendar-color-m">.'''.[]</span><span class="calendar-color-v">~~~</span><span class="calendar-color-m">'</span><span class="calendar-color-i">'''.........'''</span>               <span class="calendar-day">12</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 18, two stars" href="/2023/day/18" class="calendar-day18 calendar-verycomplete"><span class="calendar-color-m">'....</span> <span class="calendar-color-v">~</span>   <span class="calendar-color-m">'...'</span>  <span class="calendar-color-y">*</span><span class="calendar-color-m">[]....'</span>                          <span class="calendar-day">18</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 11, two stars" href="/2023/day/11" class="calendar-day11 calendar-verycomplete">    <span class="calendar-color-m">.'</span><span class="calendar-color-y">*</span>  <span class="calendar-color-v">~</span>   <span class="calendar-color-m">[^^^]</span> <span class="calendar-color-m">'.</span>                              <span class="calendar-day">11</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 10, two stars" href="/2023/day/10" class="calendar-day10 calendar-verycomplete">    <span class="calendar-color-m">'..''''.</span><span class="calendar-color-y">*</span><span class="calendar-color-m">.''''.<span class="gearfall" style=""><span class="gearfall-gadget" style="left:11.3px;top:-11.3px;animation-delay:-0.64s">.</span><span class="gearfall-gizmo" style="left:7.3px;top:-7.3px;animation-delay:-0.20s">,</span><span class="gearfall-gadget" style="left:19.6px;top:-19.6px;animation-delay:-1.80s">.</span><span class="gearfall-thingamabob" style="left:10.8px;top:-10.8px;animation-delay:-0.47s">'</span><span class="gearfall-whozit" style="left:12.3px;top:-12.3px;animation-delay:-1.43s">`</span><span class="gearfall-whozit" style="left:10.9px;top:-10.9px;animation-delay:-0.32s">`</span><span class="gearfall-gizmo" style="left:9.4px;top:-9.4px;animation-delay:-1.60s">,</span><span class="gearfall-thingamabob" style="left:7.3px;top:-7.3px;animation-delay:-1.05s">'</span><span class="gearfall-gadget" style="left:16.3px;top:-16.3px;animation-delay:-1.90s">.</span><span class="gearfall-gizmo" style="left:19.4px;top:-19.4px;animation-delay:-2.07s">,</span></span>.'</span><span class="calendar-color-s">'</span> <span class="calendar-color-s">''...</span>                       <span class="calendar-day">10</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 19, two stars" href="/2023/day/19" class="calendar-day19 calendar-verycomplete">          <span class="calendar-color-s">.</span><span class="calendar-color-m">'''</span><span class="calendar-color-s">~</span> <span class="calendar-color-s">~</span> <span class="calendar-color-s">~</span> <span class="calendar-color-m">.</span> <span class="calendar-color-y">*</span> <span class="calendar-color-k">###</span> <span class="calendar-color-s">''.</span>                    <span class="calendar-day">19</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 9, two stars" href="/2023/day/9" class="calendar-day9 calendar-verycomplete">        <span class="calendar-color-s">.'</span> <span class="calendar-color-s">~</span>  <span class="calendar-color-g">,</span><span class="calendar-color-y">*</span> <span class="calendar-color-s">~</span> <span class="calendar-color-m">'&quot;,</span> <span class="calendar-color-s">~</span> <span class="calendar-color-k">#####</span> <span class="calendar-color-s">'.</span>                  <span class="calendar-day"> 9</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 8, two stars" href="/2023/day/8" class="calendar-day8 calendar-verycomplete">        <span class="calendar-color-s">:</span> <span class="calendar-color-s">~</span> <span class="calendar-color-g">'</span><span class="calendar-color-b">(~)</span><span class="calendar-color-g">,</span> <span class="calendar-color-s">~</span> <span class="calendar-color-y">*</span> <span class="calendar-color-s">~</span> <span class="calendar-color-s">~</span> <span class="calendar-color-s">~</span> <span class="calendar-color-k">###</span> <span class="calendar-color-s">:</span>                  <span class="calendar-day"> 8</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 20, two stars" href="/2023/day/20" class="calendar-day20 calendar-verycomplete">        <span class="calendar-color-s">'.</span> <span class="calendar-color-s">~</span> <span class="calendar-color-g">&quot;</span> <span class="calendar-color-g">'</span> <span class="calendar-color-s">~</span> <span class="calendar-color-s">~</span> <span class="calendar-color-s">~</span> <span class="calendar-color-y">*</span> <span class="calendar-color-s">~~~</span><span class="calendar-color-k">##</span> <span class="calendar-color-s">.'</span>                  <span class="calendar-day">20</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 7, two stars" href="/2023/day/7" class="calendar-day7 calendar-verycomplete">          <span class="calendar-color-s">'..</span> <span class="calendar-color-s">~</span> <span class="calendar-color-s">~</span> <span class="calendar-color-y">*</span> <span class="calendar-color-s">~</span> <span class="calendar-color-k">####</span><span class="calendar-color-s">~~<span class="sandfall" style=""><span style="left:7.2px;top:-7.2px;animation-delay:-0.66s">.</span><span style="left:18.4px;top:-18.4px;animation-delay:-0.25s">.</span><span style="left:5.7px;top:-5.7px;animation-delay:-1.77s">.</span><span style="left:19.7px;top:-19.7px;animation-delay:-1.20s">.</span><span style="left:7.7px;top:-7.7px;animation-delay:-1.77s">.</span><span style="left:3.8px;top:-3.8px;animation-delay:-2.98s">.</span><span style="left:19.0px;top:-19.0px;animation-delay:-1.94s">.</span><span style="left:16.6px;top:-16.6px;animation-delay:-2.75s">.</span><span style="left:13.0px;top:-13.0px;animation-delay:-1.60s">.</span><span style="left:0.3px;top:-0.3px;animation-delay:-1.38s">.</span><span style="left:2.3px;top:-2.3px;animation-delay:-2.73s">.</span><span style="left:5.4px;top:-5.4px;animation-delay:-2.75s">.</span><span style="left:19.1px;top:-19.1px;animation-delay:-1.46s">.</span><span style="left:12.9px;top:-12.9px;animation-delay:-2.84s">.</span><span style="left:2.3px;top:-2.3px;animation-delay:-2.75s">.</span><span style="left:17.6px;top:-17.6px;animation-delay:-1.61s">.</span><span style="left:18.7px;top:-18.7px;animation-delay:-1.52s">.</span><span style="left:11.5px;top:-11.5px;animation-delay:-1.79s">.</span><span style="left:19.6px;top:-19.6px;animation-delay:-2.33s">.</span><span style="left:8.3px;top:-8.3px;animation-delay:-2.12s">.</span></span>~~'</span><span class="calendar-color-g">.'''''''''...</span>       <span class="calendar-day"> 7</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 6, two stars" href="/2023/day/6" class="calendar-day6 calendar-verycomplete">             <span class="calendar-color-s">'''.........'''</span><span class="calendar-color-g">'</span> <span class="calendar-color-b">~</span> <span class="calendar-color-g">.'</span><span class="calendar-color-y">*</span><span class="calendar-color-g">.</span> <span class="calendar-color-b">~</span>  <span class="calendar-color-g">..</span>  <span class="calendar-color-g">''.</span>    <span class="calendar-day"> 6</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 21, two stars" href="/2023/day/21" class="calendar-day21 calendar-verycomplete">                        <span class="calendar-color-g">.'</span> <span class="calendar-color-b">~</span> <span class="calendar-color-s">..</span> <span class="calendar-color-g">'...'</span> <span class="calendar-color-b">~</span><span class="calendar-color-g">'</span><span class="calendar-color-y">*</span> <span class="calendar-color-g">'.</span><span class="calendar-color-b">~</span>  <span class="calendar-color-g">'.</span>  <span class="calendar-day">21</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 5, two stars" href="/2023/day/5" class="calendar-day5 calendar-verycomplete">                        <span class="calendar-color-b">~~</span> <span class="calendar-color-s">.~~~'.</span> <span class="calendar-color-b">~</span>     <span class="calendar-color-g">'.</span> <span class="calendar-color-y">*</span><span class="calendar-color-g">'.</span><span class="calendar-color-b">~</span> <span class="calendar-color-g">:</span>  <span class="calendar-day"> 5</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 22, two stars" href="/2023/day/22" class="calendar-day22 calendar-verycomplete">                 <span class="calendar-color-w">...''''<span class="islefall" style=""><span style="left:-0.3px;top:-1.3px;animation-delay:-0.15s">|</span><span style="left:-2.8px;top:3.8px;animation-delay:-0.30s">|</span><span style="left:1.4px;top:2.1px;animation-delay:-0.45s">|</span><span style="left:0.0px;top:-2.2px;animation-delay:-0.60s">|</span><span style="left:1.9px;top:0.5px;animation-delay:-0.75s">|</span><span style="left:-2.5px;top:3.1px;animation-delay:-0.90s">|</span><span style="left:-0.9px;top:1.7px;animation-delay:-1.05s">|</span><span style="left:-0.3px;top:-1.2px;animation-delay:-1.20s">|</span><span style="left:2.8px;top:-2.6px;animation-delay:-1.35s">|</span><span style="left:-1.0px;top:-2.0px;animation-delay:-1.50s">|</span><span style="left:0.2px;top:1.4px;animation-delay:-1.65s">|</span><span style="left:3.0px;top:2.6px;animation-delay:-1.80s">|</span><span style="left:-0.4px;top:2.2px;animation-delay:-1.95s">|</span><span style="left:3.7px;top:-0.6px;animation-delay:-2.10s">|</span><span style="left:-1.4px;top:3.7px;animation-delay:-2.25s">|</span><span style="left:3.2px;top:-2.5px;animation-delay:-2.40s">|</span><span style="left:-0.5px;top:0.9px;animation-delay:-2.55s">|</span><span style="left:2.7px;top:-2.8px;animation-delay:-2.70s">|</span><span style="left:3.6px;top:2.8px;animation-delay:-2.85s">|</span><span style="left:3.4px;top:-1.0px;animation-delay:-3.00s">|</span></span></span><span class="calendar-color-b">~~~</span><span class="calendar-color-s">'</span><span class="calendar-color-y">*</span><span class="calendar-color-s">~~.'</span>  <span class="calendar-color-g">.''.</span><span class="calendar-color-b">~</span>  <span class="calendar-color-g">'..'</span> <span class="calendar-color-g">.'</span>  <span class="calendar-day">22</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 4, two stars" href="/2023/day/4" class="calendar-day4 calendar-verycomplete">              <span class="calendar-color-w">.''</span>   <span class="calendar-color-l">-</span>   <span class="calendar-color-l">-</span> <span class="calendar-color-g">'..</span>  <span class="calendar-color-b">~</span><span class="calendar-color-g">..'</span><span class="calendar-color-y">*</span>   <span class="calendar-color-g">'.</span> <span class="calendar-color-b">~</span> <span class="calendar-color-g">..'</span>    <span class="calendar-day"> 4</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 23, two stars" href="/2023/day/23" class="calendar-day23 calendar-verycomplete">            <span class="calendar-color-w">.'</span> <span class="calendar-color-y">*</span> <span class="calendar-color-l">-</span>    <span class="calendar-color-w">/\</span> <span class="calendar-color-l">-</span>   <span class="calendar-color-g">'''..</span><span class="calendar-color-m">/</span><span class="calendar-color-g">......'''</span>       <span class="calendar-day">23</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 25, two stars" href="/2023/day/25" class="calendar-day25 calendar-verycomplete">            <span class="calendar-color-w">:</span>  <span class="calendar-color-l">-</span>   <span class="calendar-color-l">-</span>  <span class="calendar-color-l">-</span> <span class="snowfall" style=""><span style="left:-0.42ch;top:7.00ch;animation-delay:-3.95s">*</span><span style="left:-2.69ch;top:6.85ch;animation-delay:-9.27s">*</span><span style="left:2.35ch;top:6.88ch;animation-delay:-4.74s">*</span><span style="left:-3.41ch;top:6.76ch;animation-delay:-5.16s">*</span><span style="left:6.76ch;top:5.98ch;animation-delay:-0.81s">*</span><span style="left:-6.60ch;top:6.03ch;animation-delay:-7.91s">*</span><span style="left:12.13ch;top:2.51ch;animation-delay:-5.20s">*</span><span style="left:12.90ch;top:0.87ch;animation-delay:-6.75s">*</span><span style="left:1.70ch;top:6.94ch;animation-delay:-4.11s">*</span><span style="left:12.68ch;top:1.54ch;animation-delay:-6.29s">*</span><span style="left:-4.49ch;top:6.57ch;animation-delay:-1.51s">*</span><span style="left:-11.94ch;top:2.77ch;animation-delay:-4.67s">*</span><span style="left:11.94ch;top:2.76ch;animation-delay:-4.76s">*</span><span style="left:11.28ch;top:3.48ch;animation-delay:-7.79s">*</span><span style="left:-10.17ch;top:4.36ch;animation-delay:-2.71s">*</span><span style="left:-7.17ch;top:5.84ch;animation-delay:-1.01s">*</span><span style="left:12.71ch;top:1.47ch;animation-delay:-6.50s">*</span><span style="left:-9.07ch;top:5.01ch;animation-delay:-1.74s">*</span><span style="left:-12.67ch;top:1.56ch;animation-delay:-8.86s">*</span><span style="left:2.37ch;top:6.88ch;animation-delay:-9.23s">*</span><span style="left:10.92ch;top:3.80ch;animation-delay:-7.43s">*</span><span style="left:11.58ch;top:3.18ch;animation-delay:-9.53s">*</span><span style="left:8.48ch;top:5.31ch;animation-delay:-1.79s">*</span><span style="left:-12.79ch;top:1.26ch;animation-delay:-0.90s">*</span><span style="left:-4.44ch;top:6.58ch;animation-delay:-0.89s">*</span><span style="left:3.79ch;top:6.70ch;animation-delay:-9.43s">*</span><span style="left:-13.00ch;top:0.07ch;animation-delay:-4.37s">*</span><span style="left:-12.31ch;top:2.25ch;animation-delay:-3.48s">*</span><span style="left:-12.98ch;top:0.43ch;animation-delay:-8.12s">*</span><span style="left:-8.03ch;top:5.50ch;animation-delay:-3.66s">*</span></span><span class="calendar-color-y">*</span> <span class="calendar-color-w">/\</span>    <span class="calendar-color-l">-</span><span class="calendar-color-m">/</span>  <span class="calendar-color-w">:</span>              <span class="calendar-day">25</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 24, two stars" href="/2023/day/24" class="calendar-day24 calendar-verycomplete">            <span class="calendar-color-w">'.</span>    <span class="calendar-color-l">-</span> <span class="calendar-color-y">*</span>  <span class="calendar-color-w">/\</span> <span class="calendar-color-l">-</span>   <span class="calendar-color-l">-</span> <span class="calendar-color-m">/</span>  <span class="calendar-color-w">.'</span>              <span class="calendar-day">24</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 3, two stars" href="/2023/day/3" class="calendar-day3 calendar-verycomplete">              <span class="calendar-color-w">'..</span>    <span class="calendar-color-l">-</span>     <span class="calendar-color-l">-</span>   <span class="calendar-color-y">*</span><span class="calendar-color-w">..'</span>                <span class="calendar-day"> 3</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 2, two stars" href="/2023/day/2" class="calendar-day2 calendar-verycomplete">    <span class="calendar-color-n">----@</span>        <span class="calendar-color-w">'''..</span><span class="calendar-color-y">*</span><span class="calendar-color-w">......'''</span>                   <span class="calendar-day"> 2</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+<a aria-label="Day 1, two stars" href="/2023/day/1" class="calendar-day1 calendar-verycomplete">  <span class="calendar-color-y">*</span> <span class="calendar-color-n">!</span> <span class="calendar-color-n">/^\</span>                                          <span class="calendar-day"> 1</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+</pre>
+
+<div id="the-story">
+  <h1>The Story</h1>
+</div>
+
+</main>
+</body>
+</html>
